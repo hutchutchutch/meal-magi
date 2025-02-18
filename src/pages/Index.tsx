@@ -1,7 +1,8 @@
+
 import { Button } from "@/components/ui/button";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
   Dialog,
@@ -64,6 +65,7 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: str
 
 const Index = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     email: "",
@@ -187,7 +189,7 @@ const Index = () => {
 
   const handleNext = () => {
     if (currentStep === steps.length - 1) {
-      window.location.href = '/dashboard';
+      navigate('/dashboard');
     } else {
       setCurrentStep((prev) => prev + 1);
     }
