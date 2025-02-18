@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
 import { motion } from "framer-motion";
@@ -17,6 +16,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const dietTypes = [
   { id: "vegetarian", label: "Vegetarian" },
@@ -62,6 +63,7 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: str
 );
 
 const Index = () => {
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
     email: "",
@@ -79,6 +81,63 @@ const Index = () => {
     },
   });
 
+  const loadTestData = async () => {
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: "test@mealmagi.com",
+        password: "testpassword123",
+      });
+
+      if (authError) throw authError;
+
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      const { data: notifData, error: notifError } = await supabase
+        .from('notification_preferences')
+        .select('*')
+        .eq('user_id', authData.user.id)
+        .single();
+
+      if (notifError) throw notifError;
+
+      setFormData({
+        email: authData.user.email || "",
+        password: "testpassword123",
+        dietaryPreferences: profileData.dietary_preferences || [],
+        allergens: (profileData.allergens || []).join(", "),
+        likedIngredients: (profileData.liked_ingredients || []).join(", "),
+        city: profileData.preferred_location?.split(", ")[0] || "",
+        state: profileData.preferred_location?.split(", ")[1] || "",
+        plan: "basic",
+        notifications: {
+          recipeReminders: notifData.recipe_reminders,
+          meditationReminders: notifData.meditation_reminders,
+          produceUpdates: notifData.local_produce_updates,
+        },
+      });
+
+      handleNext();
+
+      toast({
+        title: "Test Data Loaded",
+        description: "You can now proceed through the onboarding flow with test data.",
+      });
+    } catch (error) {
+      console.error('Error loading test data:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load test data. Please try again.",
+      });
+    }
+  };
+
   const getProgressPercentage = () => ((currentStep) / (steps.length - 1)) * 100;
 
   const handleNext = () => {
@@ -90,10 +149,19 @@ const Index = () => {
   };
 
   const renderStepContent = () => {
+    const testingLink = (
+      <button
+        onClick={loadTestData}
+        className="absolute bottom-2 right-2 text-xs text-muted-foreground hover:text-primary transition-colors"
+      >
+        Testing
+      </button>
+    );
+
     switch (currentStep) {
       case 0:
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 relative">
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -126,12 +194,13 @@ const Index = () => {
                 Continue with Google
               </Button>
             </div>
+            {testingLink}
           </div>
         );
 
       case 1:
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 relative">
             <div className="space-y-4">
               <Label>Select your dietary preferences</Label>
               <div className="grid grid-cols-2 gap-4">
@@ -187,12 +256,13 @@ const Index = () => {
                 }
               />
             </div>
+            {testingLink}
           </div>
         );
 
       case 2:
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 relative">
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
@@ -217,12 +287,13 @@ const Index = () => {
                 />
               </div>
             </div>
+            {testingLink}
           </div>
         );
 
       case 3:
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 relative">
             <RadioGroup
               value={formData.plan}
               onValueChange={(value) =>
@@ -248,12 +319,13 @@ const Index = () => {
                 </Label>
               </div>
             </RadioGroup>
+            {testingLink}
           </div>
         );
 
       case 4:
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 relative">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
@@ -316,6 +388,7 @@ const Index = () => {
                 />
               </div>
             </div>
+            {testingLink}
           </div>
         );
 
