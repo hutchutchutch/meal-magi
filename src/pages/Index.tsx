@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
 import { motion } from "framer-motion";
@@ -197,6 +196,10 @@ const Index = () => {
 
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleComplete = () => {
+    navigate('/dashboard');
   };
 
   const renderStepContent = () => {
@@ -471,7 +474,7 @@ const Index = () => {
               Back
             </Button>
             <Button
-              onClick={currentStep === steps.length - 1 ? () => {} : handleNext}
+              onClick={currentStep === steps.length - 1 ? handleComplete : handleNext}
             >
               {currentStep === steps.length - 1 ? "Complete" : "Continue"}
             </Button>
