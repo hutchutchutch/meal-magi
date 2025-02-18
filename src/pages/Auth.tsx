@@ -177,6 +177,14 @@ const Auth = () => {
               >
                 Sign in with Google
               </Button>
+
+              <button
+                type="button"
+                className="w-full text-sm text-muted-foreground hover:text-primary transition-colors text-center"
+                onClick={() => navigate("/onboarding/preferences")}
+              >
+                Test User
+              </button>
             </div>
           </form>
         </Form>
