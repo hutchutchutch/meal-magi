@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ChefHat, Sprout, Brain } from "lucide-react";
+import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -15,6 +15,8 @@ import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
 
 const dietTypes = [
   { id: "vegetarian", label: "Vegetarian" },
@@ -27,16 +29,24 @@ const dietTypes = [
 
 const steps = [
   {
-    title: "Welcome!",
-    message: "Let's start your mindful cooking journey together.",
+    title: "Welcome to MealMagi!",
+    message: "Let's get you started on your mindful cooking journey.",
   },
   {
-    title: "Your Preferences",
-    message: "Tell us what makes your meals special.",
+    title: "Your Food Preferences",
+    message: "Tell us about your dietary needs and preferences.",
   },
   {
-    title: "Almost There!",
-    message: "A few more details to personalize your experience.",
+    title: "Your Location",
+    message: "Help us find the freshest local ingredients for you.",
+  },
+  {
+    title: "Choose Your Plan",
+    message: "Select the perfect plan for your cooking adventure.",
+  },
+  {
+    title: "Stay Connected",
+    message: "Let us know how you'd like to receive updates.",
   },
 ];
 
@@ -53,14 +63,270 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: str
 
 const Index = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
-  const [allergens, setAllergens] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    dietaryPreferences: [] as string[],
+    allergens: "",
+    likedIngredients: "",
+    city: "",
+    state: "",
+    plan: "basic",
+    notifications: {
+      recipeReminders: true,
+      meditationReminders: true,
+      produceUpdates: true,
+    },
+  });
 
-  const getProgressPercentage = () => ((currentStep + 1) / steps.length) * 100;
+  const getProgressPercentage = () => ((currentStep) / (steps.length - 1)) * 100;
+
+  const handleNext = () => {
+    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+  };
+
+  const handleBack = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Or continue with social login
+              </p>
+              <Button variant="outline" className="w-full" onClick={() => {}}>
+                Continue with Google
+              </Button>
+            </div>
+          </div>
+        );
+
+      case 1:
+        return (
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <Label>Select your dietary preferences</Label>
+              <div className="grid grid-cols-2 gap-4">
+                {dietTypes.map((diet) => (
+                  <div key={diet.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={diet.id}
+                      checked={formData.dietaryPreferences.includes(diet.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setFormData({
+                            ...formData,
+                            dietaryPreferences: [...formData.dietaryPreferences, diet.id],
+                          });
+                        } else {
+                          setFormData({
+                            ...formData,
+                            dietaryPreferences: formData.dietaryPreferences.filter(
+                              (id) => id !== diet.id
+                            ),
+                          });
+                        }
+                      }}
+                    />
+                    <Label htmlFor={diet.id}>{diet.label}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="allergens">Allergens (comma-separated)</Label>
+              <Input
+                id="allergens"
+                placeholder="e.g., peanuts, shellfish, eggs"
+                value={formData.allergens}
+                onChange={(e) =>
+                  setFormData({ ...formData, allergens: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="likedIngredients">
+                Favorite ingredients (optional)
+              </Label>
+              <Input
+                id="likedIngredients"
+                placeholder="e.g., avocado, quinoa, sweet potato"
+                value={formData.likedIngredients}
+                onChange={(e) =>
+                  setFormData({ ...formData, likedIngredients: e.target.value })
+                }
+              />
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="city">City</Label>
+                <Input
+                  id="city"
+                  placeholder="Enter your city"
+                  value={formData.city}
+                  onChange={(e) =>
+                    setFormData({ ...formData, city: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="state">State</Label>
+                <Input
+                  id="state"
+                  placeholder="Enter your state"
+                  value={formData.state}
+                  onChange={(e) =>
+                    setFormData({ ...formData, state: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-6">
+            <RadioGroup
+              value={formData.plan}
+              onValueChange={(value) =>
+                setFormData({ ...formData, plan: value })
+              }
+            >
+              <div className="flex items-center space-x-2 space-y-2">
+                <RadioGroupItem value="basic" id="basic" />
+                <Label htmlFor="basic">
+                  <div className="font-medium">Basic Plan</div>
+                  <p className="text-sm text-muted-foreground">
+                    Access to basic recipes and features
+                  </p>
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2 space-y-2">
+                <RadioGroupItem value="premium" id="premium" />
+                <Label htmlFor="premium">
+                  <div className="font-medium">Premium Plan</div>
+                  <p className="text-sm text-muted-foreground">
+                    Full access to all features and premium content
+                  </p>
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Recipe Reminders</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Get notified about new recipe suggestions
+                  </p>
+                </div>
+                <Switch
+                  checked={formData.notifications.recipeReminders}
+                  onCheckedChange={(checked) =>
+                    setFormData({
+                      ...formData,
+                      notifications: {
+                        ...formData.notifications,
+                        recipeReminders: checked,
+                      },
+                    })
+                  }
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Meditation Reminders</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Daily mindful cooking reminders
+                  </p>
+                </div>
+                <Switch
+                  checked={formData.notifications.meditationReminders}
+                  onCheckedChange={(checked) =>
+                    setFormData({
+                      ...formData,
+                      notifications: {
+                        ...formData.notifications,
+                        meditationReminders: checked,
+                      },
+                    })
+                  }
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label>Local Produce Updates</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Stay informed about seasonal ingredients
+                  </p>
+                </div>
+                <Switch
+                  checked={formData.notifications.produceUpdates}
+                  onCheckedChange={(checked) =>
+                    setFormData({
+                      ...formData,
+                      notifications: {
+                        ...formData.notifications,
+                        produceUpdates: checked,
+                      },
+                    })
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-screen">
-      <Dialog open={currentStep > 0} onOpenChange={() => setCurrentStep(0)}>
+      <Dialog open={currentStep > -1} onOpenChange={() => setCurrentStep(-1)}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <div className="space-y-4 mb-4">
@@ -71,51 +337,21 @@ const Index = () => {
               </DialogDescription>
             </div>
           </DialogHeader>
-          {currentStep === 1 && (
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <Label>Select your dietary preferences</Label>
-                <div className="grid grid-cols-2 gap-4">
-                  {dietTypes.map((diet) => (
-                    <div key={diet.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={diet.id}
-                        checked={selectedDiets.includes(diet.id)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setSelectedDiets([...selectedDiets, diet.id]);
-                          } else {
-                            setSelectedDiets(
-                              selectedDiets.filter((id) => id !== diet.id)
-                            );
-                          }
-                        }}
-                      />
-                      <Label htmlFor={diet.id}>{diet.label}</Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="allergens">Allergens (comma-separated)</Label>
-                <Input
-                  id="allergens"
-                  placeholder="e.g., peanuts, shellfish, eggs"
-                  value={allergens}
-                  onChange={(e) => setAllergens(e.target.value)}
-                />
-              </div>
-
-              <Button
-                type="button"
-                className="w-full"
-                onClick={() => setCurrentStep(2)}
-              >
-                Continue
-              </Button>
-            </div>
-          )}
+          {renderStepContent()}
+          <div className="flex justify-between mt-6">
+            <Button
+              variant="outline"
+              onClick={handleBack}
+              disabled={currentStep === 0}
+            >
+              Back
+            </Button>
+            <Button
+              onClick={currentStep === steps.length - 1 ? () => {} : handleNext}
+            >
+              {currentStep === steps.length - 1 ? "Complete" : "Continue"}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
 
