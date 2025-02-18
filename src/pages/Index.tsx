@@ -84,23 +84,49 @@ const Index = () => {
 
   const loadTestData = async () => {
     try {
-      console.log("Attempting to sign in with test credentials:", {
+      // First, check if the Supabase client is properly initialized
+      console.log("Supabase client config:", {
+        supabaseUrl: supabase.config.supabaseUrl,
+        // Don't log the full key, just the first few characters
+        authKeyPreview: supabase.config.supabaseKey?.substring(0, 8) + "..."
+      });
+
+      // Check if there's any existing session
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log("Existing session:", session ? "Yes" : "No");
+
+      // Log the exact request we're about to make
+      const credentials = {
         email: "test@mealmagi.com",
         password: "testpassword123"
+      };
+      console.log("Attempting authentication with:", {
+        email: credentials.email,
+        passwordLength: credentials.password.length
       });
 
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email: "test@mealmagi.com",
-        password: "testpassword123",
-      });
+      // Attempt to sign in
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword(credentials);
 
       if (authError) {
-        console.error("Authentication error:", authError);
+        // Log detailed error information
+        console.error("Authentication error details:", {
+          message: authError.message,
+          status: authError.status,
+          name: authError.name,
+          ...(authError as any)?.error, // Capture any additional error details
+        });
         throw authError;
       }
 
-      console.log("Successfully authenticated. User ID:", authData.user.id);
+      console.log("Authentication successful:", {
+        userId: authData.user?.id,
+        userEmail: authData.user?.email,
+        userCreatedAt: authData.user?.created_at,
+        sessionExpiry: authData.session?.expires_at
+      });
 
+      // Continue with profile data fetch
       const { data: profileData, error: profileError } = await supabase
         .from('user_profiles')
         .select('*')
@@ -108,7 +134,12 @@ const Index = () => {
         .single();
 
       if (profileError) {
-        console.error("Profile fetch error:", profileError);
+        console.error("Profile fetch error:", {
+          message: profileError.message,
+          code: profileError.code,
+          details: profileError.details,
+          hint: profileError.hint
+        });
         throw profileError;
       }
 
@@ -161,6 +192,8 @@ const Index = () => {
       });
     } catch (error) {
       console.error('Error loading test data:', error);
+      // Log the raw error object for debugging
+      console.error('Raw error object:', JSON.stringify(error, null, 2));
       toast({
         variant: "destructive",
         title: "Error",
@@ -521,4 +554,3 @@ const Index = () => {
 };
 
 export default Index;
-
