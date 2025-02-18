@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ChefHat, Sprout, Brain } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: string, description: string }) => (
   <motion.div
@@ -36,15 +37,17 @@ const Index = () => {
               <Button
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-white"
+                asChild
               >
-                Get Started
+                <Link to="/auth">Get Started</Link>
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="bg-transparent border-white text-white hover:bg-white/10"
+                asChild
               >
-                Sign In
+                <Link to="/auth">Sign In</Link>
               </Button>
             </div>
           </motion.div>
