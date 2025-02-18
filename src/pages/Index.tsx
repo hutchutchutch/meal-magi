@@ -106,14 +106,24 @@ const Index = () => {
 
       if (notifError) throw notifError;
 
+      const allergens = Array.isArray(profileData.allergens) 
+        ? profileData.allergens.join(", ")
+        : "";
+      
+      const likedIngredients = Array.isArray(profileData.liked_ingredients)
+        ? profileData.liked_ingredients.join(", ")
+        : "";
+
+      const [city, state] = (profileData.preferred_location || "").split(", ");
+
       setFormData({
         email: authData.user.email || "",
         password: "testpassword123",
-        dietaryPreferences: profileData.dietary_preferences || [],
-        allergens: (profileData.allergens || []).join(", "),
-        likedIngredients: (profileData.liked_ingredients || []).join(", "),
-        city: profileData.preferred_location?.split(", ")[0] || "",
-        state: profileData.preferred_location?.split(", ")[1] || "",
+        dietaryPreferences: [],  // We don't store this in the current schema
+        allergens,
+        likedIngredients,
+        city: city || "",
+        state: state || "",
         plan: "basic",
         notifications: {
           recipeReminders: notifData.recipe_reminders,
