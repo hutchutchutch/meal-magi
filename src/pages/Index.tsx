@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
 import { motion } from "framer-motion";
@@ -83,12 +84,22 @@ const Index = () => {
 
   const loadTestData = async () => {
     try {
+      console.log("Attempting to sign in with test credentials:", {
+        email: "test@mealmagi.com",
+        password: "testpassword123"
+      });
+
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: "test@mealmagi.com",
         password: "testpassword123",
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        console.error("Authentication error:", authError);
+        throw authError;
+      }
+
+      console.log("Successfully authenticated. User ID:", authData.user.id);
 
       const { data: profileData, error: profileError } = await supabase
         .from('user_profiles')
@@ -96,7 +107,12 @@ const Index = () => {
         .eq('id', authData.user.id)
         .single();
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        console.error("Profile fetch error:", profileError);
+        throw profileError;
+      }
+
+      console.log("Successfully fetched profile data:", profileData);
 
       const { data: notifData, error: notifError } = await supabase
         .from('notification_preferences')
@@ -104,7 +120,12 @@ const Index = () => {
         .eq('user_id', authData.user.id)
         .single();
 
-      if (notifError) throw notifError;
+      if (notifError) {
+        console.error("Notification preferences fetch error:", notifError);
+        throw notifError;
+      }
+
+      console.log("Successfully fetched notification data:", notifData);
 
       const allergens = Array.isArray(profileData.allergens) 
         ? profileData.allergens.join(", ")
@@ -500,3 +521,4 @@ const Index = () => {
 };
 
 export default Index;
+
