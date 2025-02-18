@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
 import { motion } from "framer-motion";
@@ -84,37 +83,21 @@ const Index = () => {
 
   const loadTestData = async () => {
     try {
-      // First, check if the Supabase client is properly initialized
-      console.log("Supabase client config:", {
-        supabaseUrl: supabase.config.supabaseUrl,
-        // Don't log the full key, just the first few characters
-        authKeyPreview: supabase.config.supabaseKey?.substring(0, 8) + "..."
-      });
-
-      // Check if there's any existing session
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log("Existing session:", session ? "Yes" : "No");
-
-      // Log the exact request we're about to make
-      const credentials = {
-        email: "test@mealmagi.com",
-        password: "testpassword123"
-      };
       console.log("Attempting authentication with:", {
-        email: credentials.email,
-        passwordLength: credentials.password.length
+        email: "test@mealmagi.com",
+        passwordLength: "testpassword123".length
       });
 
-      // Attempt to sign in
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword(credentials);
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email: "test@mealmagi.com",
+        password: "testpassword123",
+      });
 
       if (authError) {
-        // Log detailed error information
         console.error("Authentication error details:", {
           message: authError.message,
           status: authError.status,
-          name: authError.name,
-          ...(authError as any)?.error, // Capture any additional error details
+          name: authError.name
         });
         throw authError;
       }
@@ -126,7 +109,6 @@ const Index = () => {
         sessionExpiry: authData.session?.expires_at
       });
 
-      // Continue with profile data fetch
       const { data: profileData, error: profileError } = await supabase
         .from('user_profiles')
         .select('*')
@@ -192,7 +174,6 @@ const Index = () => {
       });
     } catch (error) {
       console.error('Error loading test data:', error);
-      // Log the raw error object for debugging
       console.error('Raw error object:', JSON.stringify(error, null, 2));
       toast({
         variant: "destructive",
@@ -205,7 +186,11 @@ const Index = () => {
   const getProgressPercentage = () => ((currentStep) / (steps.length - 1)) * 100;
 
   const handleNext = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    if (currentStep === steps.length - 1) {
+      window.location.href = '/dashboard';
+    } else {
+      setCurrentStep((prev) => prev + 1);
+    }
   };
 
   const handleBack = () => {
@@ -244,7 +229,7 @@ const Index = () => {
                 <Input
                   id="password"
                   type="password"
-                  placeholder="••••••••"
+                  placeholder="•••••���••"
                   value={formData.password}
                   onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
