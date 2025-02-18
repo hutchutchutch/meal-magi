@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,11 +9,25 @@ import {
   ChevronDown, 
   Settings, 
   Plus, 
-  Clock, 
+  Clock,
   Brain,
   Leaf,
-  ShoppingCart
+  ShoppingCart,
+  Trash,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -21,7 +35,42 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+interface PantryItem {
+  id: string;
+  name: string;
+  amount?: string;
+  expirationDate?: Date;
+}
+
 const Dashboard = () => {
+  const [isAddPantryOpen, setIsAddPantryOpen] = useState(false);
+  const [pantryItems, setPantryItems] = useState<PantryItem[]>([
+    { id: '1', name: 'Arborio Rice', amount: '2 cups', expirationDate: new Date('2024-03-31') },
+    { id: '2', name: 'Olive Oil', amount: '500ml', expirationDate: new Date('2024-03-31') },
+  ]);
+  const [newPantryItem, setNewPantryItem] = useState<Omit<PantryItem, 'id'>>({
+    name: '',
+    amount: '',
+  });
+  const [date, setDate] = useState<Date>();
+
+  const handleAddPantryItem = () => {
+    if (newPantryItem.name.trim()) {
+      setPantryItems([...pantryItems, {
+        id: Math.random().toString(36).substr(2, 9),
+        ...newPantryItem,
+        expirationDate: date
+      }]);
+      setNewPantryItem({ name: '', amount: '' });
+      setDate(undefined);
+      setIsAddPantryOpen(false);
+    }
+  };
+
+  const handleRemovePantryItem = (id: string) => {
+    setPantryItems(pantryItems.filter(item => item.id !== id));
+  };
+
   return (
     <div className="flex h-screen bg-background">
       {/* Left Column - User Profile & Saved Recipes */}
@@ -154,22 +203,92 @@ const Dashboard = () => {
 
         {/* Pantry */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">Pantry</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Pantry</h2>
+            <Button variant="outline" size="icon" onClick={() => setIsAddPantryOpen(true)}>
+              <Plus className="h-4 w-4" />
+            </Button>
+          </div>
           <div className="space-y-3">
-            {['Arborio Rice', 'Olive Oil'].map((item) => (
-              <div key={item} className="flex items-center justify-between p-2 border rounded-lg">
+            {pantryItems.map((item) => (
+              <div key={item.id} className="flex items-center justify-between p-2 border rounded-lg">
                 <div>
-                  <p className="font-medium">{item}</p>
-                  <p className="text-sm text-muted-foreground">2 cups • Expires 03/2024</p>
+                  <p className="font-medium">{item.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {item.amount} • Expires {item.expirationDate ? format(item.expirationDate, 'MM/yyyy') : 'No date'}
+                  </p>
                 </div>
-                <Button variant="ghost" size="icon">
-                  <Settings className="h-4 w-4" />
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => handleRemovePantryItem(item.id)}
+                >
+                  <Trash className="h-4 w-4" />
                 </Button>
               </div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Add Pantry Item Dialog */}
+      <Dialog open={isAddPantryOpen} onOpenChange={setIsAddPantryOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Add Pantry Item</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                value={newPantryItem.name}
+                onChange={(e) => setNewPantryItem({ ...newPantryItem, name: e.target.value })}
+                placeholder="Enter item name"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="amount">Amount (optional)</Label>
+              <Input
+                id="amount"
+                value={newPantryItem.amount}
+                onChange={(e) => setNewPantryItem({ ...newPantryItem, amount: e.target.value })}
+                placeholder="e.g., 2 cups, 500ml"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label>Expiration Date (optional)</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "justify-start text-left font-normal",
+                      !date && "text-muted-foreground"
+                    )}
+                  >
+                    {date ? format(date, "PPP") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddPantryOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddPantryItem}>Add Item</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
