@@ -3,6 +3,42 @@ import { Button } from "@/components/ui/button";
 import { ChefHat, Sprout, Brain } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+
+const dietTypes = [
+  { id: "vegetarian", label: "Vegetarian" },
+  { id: "vegan", label: "Vegan" },
+  { id: "gluten-free", label: "Gluten-free" },
+  { id: "dairy-free", label: "Dairy-free" },
+  { id: "keto", label: "Keto" },
+  { id: "paleo", label: "Paleo" },
+];
+
+const steps = [
+  {
+    title: "Welcome!",
+    message: "Let's start your mindful cooking journey together.",
+  },
+  {
+    title: "Your Preferences",
+    message: "Tell us what makes your meals special.",
+  },
+  {
+    title: "Almost There!",
+    message: "A few more details to personalize your experience.",
+  },
+];
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: string, description: string }) => (
   <motion.div
@@ -16,8 +52,73 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: str
 );
 
 const Index = () => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
+  const [allergens, setAllergens] = useState("");
+
+  const getProgressPercentage = () => ((currentStep + 1) / steps.length) * 100;
+
   return (
     <div className="min-h-screen">
+      <Dialog open={currentStep > 0} onOpenChange={() => setCurrentStep(0)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="space-y-4 mb-4">
+              <Progress value={getProgressPercentage()} className="h-2" />
+              <DialogTitle>{steps[currentStep]?.title}</DialogTitle>
+              <DialogDescription>
+                {steps[currentStep]?.message}
+              </DialogDescription>
+            </div>
+          </DialogHeader>
+          {currentStep === 1 && (
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <Label>Select your dietary preferences</Label>
+                <div className="grid grid-cols-2 gap-4">
+                  {dietTypes.map((diet) => (
+                    <div key={diet.id} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={diet.id}
+                        checked={selectedDiets.includes(diet.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedDiets([...selectedDiets, diet.id]);
+                          } else {
+                            setSelectedDiets(
+                              selectedDiets.filter((id) => id !== diet.id)
+                            );
+                          }
+                        }}
+                      />
+                      <Label htmlFor={diet.id}>{diet.label}</Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="allergens">Allergens (comma-separated)</Label>
+                <Input
+                  id="allergens"
+                  placeholder="e.g., peanuts, shellfish, eggs"
+                  value={allergens}
+                  onChange={(e) => setAllergens(e.target.value)}
+                />
+              </div>
+
+              <Button
+                type="button"
+                className="w-full"
+                onClick={() => setCurrentStep(2)}
+              >
+                Continue
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       <section className="hero-section min-h-[80vh] flex items-center justify-center text-white p-8">
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
           <motion.div
@@ -37,9 +138,9 @@ const Index = () => {
               <Button
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-white"
-                asChild
+                onClick={() => setCurrentStep(1)}
               >
-                <Link to="/auth">Get Started</Link>
+                Get Started
               </Button>
               <Button
                 size="lg"
