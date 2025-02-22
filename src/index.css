@@ -110,3 +110,16 @@
 .feature-card p {
   @apply text-sm;
 }
+
+
+.meal-chart {
+  min-height: 60px;
+}
+
+.meal-chart .h-2 {
+  transition: all 0.2s ease-in-out;
+}
+
+.meal-chart .h-2:hover {
+  transform: scaleY(1.5);
+}
