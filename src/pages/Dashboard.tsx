@@ -152,10 +152,11 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </ScrollArea>
 
-        <ScrollArea className="flex-grow">
-          <div className="space-y-6">
-            <div>
+        <div className="space-y-6">
+          <div>
               <h3 className="text-lg font-semibold mb-3">Saved Recipes</h3>
               <div className="space-y-2">
                 <Button variant="ghost" className="w-full justify-start">
