@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
 import { motion } from "framer-motion";
+import Marquee from "react-fast-marquee";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
@@ -519,9 +520,11 @@ const Index = () => {
       </section>
 
       <section className="py-20 px-8 bg-background overflow-hidden">
-        <div className="marquee-container">
-          <div className="marquee">
-            <div className="marquee-content">
+        <div className="relative">
+          <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-background to-transparent" />
+          <div className="pointer-events-none absolute right-0 z-10 w-[100px] h-full bg-gradient-to-l from-background to-transparent" />
+          <Marquee gradientWidth={0} speed={40}>
+            <div className="flex gap-8 px-4">
               <FeatureCard
                 icon={ChefHat}
                 title="Personalized Recipes"
@@ -558,44 +561,7 @@ const Index = () => {
                 description="Label your favorite recipes as quick & easy, budget friendly, clean and revitalizing"
               />
             </div>
-            <div className="marquee-content" aria-hidden="true">
-              <FeatureCard
-                icon={ChefHat}
-                title="Personalized Recipes"
-                description="Healthy whole food recipes curated to your diet and palate preferences"
-              />
-              <FeatureCard
-                icon={Sprout}
-                title="Local Produce"
-                description="Identifying seasonal available produce based on your local region"
-              />
-              <FeatureCard
-                icon={Brain}
-                title="Informative Tips"
-                description="Helpful tidbits of information for each step of the process so you learn as you go"
-              />
-              <FeatureCard
-                icon={Bell}
-                title="Guided Meditations"
-                description="Developing a spiritual connection with the food you consume amplifies the nourishment"
-              />
-              <FeatureCard
-                icon={ChefHat}
-                title="Meal Planning"
-                description="Weekly shopping lists generated to simpilfy the hassle of meal prep"
-              />
-              <FeatureCard
-                icon={Sprout}
-                title="Pantry Purification"
-                description="Utilize ingredients you already have, no more discovering expired foods on your shelf"
-              />
-              <FeatureCard
-                icon={Brain}
-                title="Curated Favorites"
-                description="Label your favorite recipes as quick & easy, budget friendly, clean and revitalizing"
-              />
-            </div>
-          </div>
+          </Marquee>
         </div>
       </section>
     </div>
