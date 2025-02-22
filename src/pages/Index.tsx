@@ -518,24 +518,83 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20 px-8 bg-background">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={ChefHat}
-              title="Personalized Recipes"
-              description="AI-generated recipes based on your dietary preferences and pantry items."
-            />
-            <FeatureCard
-              icon={Sprout}
-              title="Local Produce"
-              description="Discover and cook with in-season ingredients from your area."
-            />
-            <FeatureCard
-              icon={Brain}
-              title="Guided Meditations"
-              description="Connect deeply with your food through personalized cooking meditations."
-            />
+      <section className="py-20 px-8 bg-background overflow-hidden">
+        <div className="marquee-container">
+          <div className="marquee">
+            <div className="marquee-content">
+              <FeatureCard
+                icon={ChefHat}
+                title="Personalized Recipes"
+                description="Healthy whole food recipes curated to your diet and palate preferences"
+              />
+              <FeatureCard
+                icon={Sprout}
+                title="Local Produce"
+                description="Identifying seasonal available produce based on your local region"
+              />
+              <FeatureCard
+                icon={Brain}
+                title="Informative Tips"
+                description="Helpful tidbits of information for each step of the process so you learn as you go"
+              />
+              <FeatureCard
+                icon={Bell}
+                title="Guided Meditations"
+                description="Developing a spiritual connection with the food you consume amplifies the nourishment"
+              />
+              <FeatureCard
+                icon={ChefHat}
+                title="Meal Planning"
+                description="Weekly shopping lists generated to simpilfy the hassle of meal prep"
+              />
+              <FeatureCard
+                icon={Sprout}
+                title="Pantry Purification"
+                description="Utilize ingredients you already have, no more discovering expired foods on your shelf"
+              />
+              <FeatureCard
+                icon={Brain}
+                title="Curated Favorites"
+                description="Label your favorite recipes as quick & easy, budget friendly, clean and revitalizing"
+              />
+            </div>
+            <div className="marquee-content" aria-hidden="true">
+              <FeatureCard
+                icon={ChefHat}
+                title="Personalized Recipes"
+                description="Healthy whole food recipes curated to your diet and palate preferences"
+              />
+              <FeatureCard
+                icon={Sprout}
+                title="Local Produce"
+                description="Identifying seasonal available produce based on your local region"
+              />
+              <FeatureCard
+                icon={Brain}
+                title="Informative Tips"
+                description="Helpful tidbits of information for each step of the process so you learn as you go"
+              />
+              <FeatureCard
+                icon={Bell}
+                title="Guided Meditations"
+                description="Developing a spiritual connection with the food you consume amplifies the nourishment"
+              />
+              <FeatureCard
+                icon={ChefHat}
+                title="Meal Planning"
+                description="Weekly shopping lists generated to simpilfy the hassle of meal prep"
+              />
+              <FeatureCard
+                icon={Sprout}
+                title="Pantry Purification"
+                description="Utilize ingredients you already have, no more discovering expired foods on your shelf"
+              />
+              <FeatureCard
+                icon={Brain}
+                title="Curated Favorites"
+                description="Label your favorite recipes as quick & easy, budget friendly, clean and revitalizing"
+              />
+            </div>
           </div>
         </div>
       </section>
