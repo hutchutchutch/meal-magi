@@ -95,18 +95,31 @@
   max-width: 200px;
   height: 220px;
   flex-shrink: 0;
-  background: linear-gradient(to bottom, hsl(142 76% 36%), hsl(142 76% 32%));
-  border: 1px solid hsl(142 76% 40%);
+  background: linear-gradient(to bottom, hsl(142 30% 98%), hsl(142 30% 95%));
+  border: 1px solid hsl(142 30% 90%);
 }
 
 .feature-icon {
-  @apply w-12 h-12 mb-3 text-white transition-transform duration-300 ease-in-out;
+  @apply w-12 h-12 mb-3 text-primary transition-transform duration-300 ease-in-out;
 }
 
 .feature-card h3 {
-  @apply text-base font-bold text-white;
+  @apply text-base;
 }
 
 .feature-card p {
-  @apply text-sm text-white/90;
+  @apply text-sm;
+}
+
+
+.meal-chart {
+  min-height: 60px;
+}
+
+.meal-chart .h-2 {
+  transition: all 0.2s ease-in-out;
+}
+
+.meal-chart .h-2:hover {
+  transform: scaleY(1.5);
 }
