@@ -12,11 +12,6 @@ import {
   Clock,
   Brain,
   Leaf,
-
-import { useState } from 'react';
-const [expandedWeek, setExpandedWeek] = useState<string | null>(null);
-const isExpanded = expandedWeek === '2024-02-04';
-
   ShoppingCart,
   Trash,
 } from "lucide-react";
@@ -48,6 +43,8 @@ interface PantryItem {
 }
 
 const Dashboard = () => {
+  const [expandedWeek, setExpandedWeek] = useState<string | null>(null);
+  const isExpanded = expandedWeek === '2024-02-04';
   const [isAddPantryOpen, setIsAddPantryOpen] = useState(false);
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([
     { id: '1', name: 'Arborio Rice', amount: '2 cups', expirationDate: new Date('2024-03-31') },
