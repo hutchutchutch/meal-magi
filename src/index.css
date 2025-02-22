@@ -5,12 +5,12 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --background: 142 30% 95%;
+    --foreground: 142 50% 10%;
+    --card: 142 30% 98%;
+    --card-foreground: 142 50% 10%;
+    --popover: 142 30% 98%;
+    --popover-foreground: 142 50% 10%;
     --primary: 142 76% 36%;
     --primary-foreground: 355.7 100% 97.3%;
     --secondary: 240 4.8% 95.9%;
@@ -91,6 +91,22 @@
 }
 
 .feature-card {
-  min-width: 300px;
+  min-width: 200px;
+  max-width: 200px;
+  height: 220px;
   flex-shrink: 0;
+  background: linear-gradient(to bottom, hsl(142 30% 98%), hsl(142 30% 95%));
+  border: 1px solid hsl(142 30% 90%);
+}
+
+.feature-icon {
+  @apply w-12 h-12 mb-3 text-primary transition-transform duration-300 ease-in-out;
+}
+
+.feature-card h3 {
+  @apply text-base;
+}
+
+.feature-card p {
+  @apply text-sm;
 }

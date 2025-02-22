@@ -523,8 +523,8 @@ const Index = () => {
         <div className="relative">
           <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-background to-transparent" />
           <div className="pointer-events-none absolute right-0 z-10 w-[100px] h-full bg-gradient-to-l from-background to-transparent" />
-          <Marquee gradientWidth={0} speed={40}>
-            <div className="flex gap-8 px-4">
+          <Marquee gradientWidth={0} speed={30}>
+            <div className="flex gap-4 px-4">
               <FeatureCard
                 icon={ChefHat}
                 title="Personalized Recipes"
