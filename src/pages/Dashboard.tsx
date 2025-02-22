@@ -12,11 +12,6 @@ import {
   Clock,
   Brain,
   Leaf,
-
-import { useState } from 'react';
-const [expandedWeek, setExpandedWeek] = useState<string | null>(null);
-const isExpanded = expandedWeek === '2024-02-04';
-
   ShoppingCart,
   Trash,
 } from "lucide-react";
@@ -122,41 +117,13 @@ const Dashboard = () => {
       {/* Center Column - Meal Plans */}
       <div className="w-2/4 p-4 overflow-auto">
         <h1 className="text-2xl font-bold mb-6">Weekly Meal Plans</h1>
-        <Card className="mb-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setExpandedWeek(isExpanded ? null : '2024-02-04')}>
+        <Card className="mb-6">
           <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              <span>2/4 - 2/11</span>
-              <div className="text-sm text-muted-foreground">
-                <span className="mr-4">Breakfast: 3</span>
-                <span className="mr-4">Lunch: 5</span>
-                <span>Dinner: 7</span>
-              </div>
-            </CardTitle>
+            <CardTitle>Week of 2/4/2024</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="meal-chart grid grid-cols-7 gap-1 mb-4">
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                  <div key={day} className="text-center">
-                    <div className="text-xs mb-1">{day}</div>
-                    <div className="space-y-1">
-                      <div className="h-2 bg-primary/20 rounded-full" />
-                      <div className="h-2 bg-primary rounded-full" />
-                      <div className="h-2 bg-primary/50 rounded-full" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
-                <div>
-                  <span className="text-sm font-medium">Grocery List</span>
-                  <span className="text-xs text-muted-foreground ml-2">32 items</span>
-                </div>
-                <span className="text-sm font-medium">$145.20</span>
-              </div>
-
-              {isExpanded && ['Sunday', 'Monday', 'Tuesday'].map((day) => (
+              {['Sunday', 'Monday', 'Tuesday'].map((day) => (
                 <div key={day} className="border rounded-lg p-4">
                   <h3 className="font-semibold mb-2">{day}</h3>
                   <Card>
