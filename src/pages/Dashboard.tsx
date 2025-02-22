@@ -77,7 +77,7 @@ const Dashboard = () => {
     <div className="flex h-screen bg-background">
       {/* Left Column - User Profile & Saved Recipes */}
       <div className="w-1/4 border-r p-4 flex flex-col">
-        <div className="flex items-center space-x-4 mb-8">
+        <div className="flex items-center space-x-4 mb-6">
           <Avatar className="h-16 w-16">
             <AvatarImage src="/placeholder.svg" />
             <AvatarFallback>JS</AvatarFallback>
@@ -87,7 +87,72 @@ const Dashboard = () => {
             <p className="text-sm text-muted-foreground">Pacific Northwest</p>
           </div>
         </div>
-        
+
+        <ScrollArea className="flex-grow">
+          <div className="space-y-6">
+            {/* Dietary Preferences */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium">Dietary Preferences</h3>
+              <div className="space-y-1">
+                {['Vegetarian', 'Gluten-free'].map((diet) => (
+                  <Badge key={diet} variant="secondary" className="mr-1">
+                    {diet}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Allergens */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium">Allergens</h3>
+              <div className="space-y-1">
+                {['Peanuts', 'Shellfish'].map((allergen) => (
+                  <Badge key={allergen} variant="destructive" className="mr-1">
+                    {allergen}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Liked Foods */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium">Favorite Foods</h3>
+              <div className="space-y-1">
+                {['Tomatoes', 'Garlic', 'Basil'].map((food) => (
+                  <Badge key={food} variant="outline" className="mr-1 bg-green-100">
+                    {food}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Disliked Foods */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium">Disliked Foods</h3>
+              <div className="space-y-1">
+                {['Cilantro', 'Olives'].map((food) => (
+                  <Badge key={food} variant="outline" className="mr-1 bg-red-100">
+                    {food}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+
+            {/* Meal Requirements */}
+            <div className="space-y-3">
+              <h3 className="text-sm font-medium">Meal Requirements</h3>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex justify-between">
+                  <span>Calories per meal:</span>
+                  <span>600-800</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Protein per meal:</span>
+                  <span>30-40g</span>
+                </div>
+              </div>
+            </div>
+
         <ScrollArea className="flex-grow">
           <div className="space-y-6">
             <div>
