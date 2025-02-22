@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +33,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useState } from 'react';
 
 interface PantryItem {
   id: string;
@@ -172,7 +172,7 @@ const Dashboard = () => {
                 </Button>
               </div>
             </div>
-            
+
             <Button variant="outline" className="w-full">
               <Settings className="mr-2 h-4 w-4" />
               Settings
@@ -209,7 +209,7 @@ const Dashboard = () => {
                   </div>
                 ))}
               </div>
-              
+
               <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
                 <div>
                   <span className="text-sm font-medium">Grocery List</span>
