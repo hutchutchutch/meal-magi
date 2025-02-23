@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -6,11 +7,11 @@ export const UserProfile = () => {
     <div className="flex items-center space-x-4 mb-8">
       <Avatar className="h-16 w-16">
         <AvatarImage src="/placeholder.svg" />
-        <AvatarFallback>JS</AvatarFallback>
+        <AvatarFallback>H</AvatarFallback>
       </Avatar>
       <div>
-        <h2 className="text-xl font-semibold">Jane Smith</h2>
-        <p className="text-sm text-muted-foreground">Pacific Northwest</p>
+        <h2 className="text-xl font-semibold">Hutch</h2>
+        <p className="text-sm text-muted-foreground">Austin, Texas</p>
       </div>
     </div>
   );
