@@ -7,7 +7,10 @@ import { MarqueeSection } from "./Index/components/MarqueeSection";
 import { OnboardingDialog } from "./Index/components/OnboardingDialog";
 import { FormData } from "./Index/components/OnboardingDialog/types";
 
+import AuthDialog from "@/components/Auth/AuthDialog";
+
 const Index = () => {
+  const [showAuth, setShowAuth] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
@@ -144,6 +147,7 @@ const Index = () => {
     <div className="min-h-screen">
       <Hero />
       <MarqueeSection />
+      <AuthDialog open={showAuth} onOpenChange={setShowAuth} />
 
       <OnboardingDialog
         currentStep={currentStep}
