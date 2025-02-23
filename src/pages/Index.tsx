@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
@@ -192,10 +193,10 @@ const Index = () => {
         </div>
         
         {/* Marquee section at the bottom of hero */}
-        <div className="absolute bottom-8 left-0 right-0 overflow-hidden">
+        <div className="absolute bottom-8 left-0 right-0">
           <div className="relative">
-            {/* Shine effect gradients */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90" />
+            {/* Main background gradient */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black to-transparent" />
             
             {/* Marquee fade edges */}
             <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-black to-transparent" />
