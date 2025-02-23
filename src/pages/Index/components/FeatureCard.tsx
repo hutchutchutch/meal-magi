@@ -16,8 +16,8 @@ export const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps
 
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="feature-card p-4 rounded-2xl bg-card shadow-lg hover:shadow-xl transition-all duration-300 w-[200px]"
+      whileHover={{ scale: 1.0 }}
+      className="relative feature-card p-4 rounded-2xl bg-card shadow-lg hover:shadow-xl transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -25,16 +25,16 @@ export const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="fixed bottom-[450px] left-1/2 -translate-x-1/2 z-50"
+          className="absolute bottom-[150px] left-1/2 -translate-x-1/2 z-50 w-[300px]"
         >
-          <Card className="p-4 w-[300px] bg-black/90 border-primary/20">
+          <Card className="p-4 bg-black/90 border-primary/20">
             <p className="text-primary/90 text-center text-sm">{description}</p>
           </Card>
         </motion.div>
       )}
       <Icon className="feature-icon mx-auto mb-2" />
       <div className="flex flex-col items-center">
-        <h3 className="font-medium text-center">
+        <h3 className={`text-center ${isHovered ? 'font-bold' : 'font-medium'}`}>
           <span className="block">{firstLine}</span>
           <span className="block">{secondLine}</span>
         </h3>
@@ -42,4 +42,3 @@ export const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps
     </motion.div>
   );
 };
-
