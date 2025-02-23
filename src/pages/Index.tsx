@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
@@ -155,7 +154,7 @@ const Index = () => {
             className="bg-primary hover:bg-primary/90 text-white px-8"
             onClick={() => navigate("/auth")}
           >
-            Get Started
+            Get Free Meal Plan
           </Button>
           <Button
             size="lg"
@@ -169,16 +168,9 @@ const Index = () => {
 
         {/* Title and sparkles */}
         <div className="text-center relative z-20">
-          <motion.p 
-            className="text-2xl mb-6 relative"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="bg-gradient-to-r from-primary via-emerald-400 to-primary bg-clip-text text-transparent animate-pulse">
-              Have a Spiritual Connection with Your Food
-            </span>
-          </motion.p>
+          <p className="text-2xl mb-6 relative text-primary">
+            Connect with your food
+          </p>
           <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white">
             MealMagi
           </h1>
@@ -272,4 +264,3 @@ const Index = () => {
 };
 
 export default Index;
-
