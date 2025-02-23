@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
@@ -201,10 +202,17 @@ const Index = () => {
         onOpenChange={() => setCurrentStep(-1)}
       />
 
-      <section className="py-20 px-8 bg-background overflow-hidden">
+      <section className="py-20 px-8 bg-black relative overflow-hidden">
         <div className="relative">
-          <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-background to-transparent" />
-          <div className="pointer-events-none absolute right-0 z-10 w-[100px] h-full bg-gradient-to-l from-background to-transparent" />
+          {/* Shine effect gradients */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90" />
+          <div className="pointer-events-none absolute -inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          <div className="pointer-events-none absolute -inset-x-4 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          
+          {/* Marquee fade edges */}
+          <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-black to-transparent" />
+          <div className="pointer-events-none absolute right-0 z-10 w-[100px] h-full bg-gradient-to-l from-black to-transparent" />
+          
           <Marquee gradientWidth={0} speed={30}>
             <div className="flex gap-4 px-4">
               <FeatureCard
@@ -251,3 +259,4 @@ const Index = () => {
 };
 
 export default Index;
+
