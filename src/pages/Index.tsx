@@ -168,7 +168,7 @@ const Index = () => {
         </div>
 
         {/* Title and sparkles */}
-        <div className="text-center relative z-20 mt-32">
+        <div className="text-center relative z-20 mt-48">
           <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white">
             MealMagi
           </h1>
