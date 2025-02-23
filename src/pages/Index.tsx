@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
@@ -147,7 +146,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      <section className="h-[80vh] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md relative">
+      <section className="h-screen w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md relative">
         {/* Top right CTAs */}
         <div className="absolute top-4 right-4 flex gap-4 z-30">
           <Button
@@ -193,7 +192,7 @@ const Index = () => {
         </div>
         
         {/* Marquee section at the bottom of hero */}
-        <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm">
+        <div className="absolute bottom-8 left-0 right-0 bg-black/50 backdrop-blur-sm">
           <div className="relative">
             {/* Shine effect gradients */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90" />
@@ -262,4 +261,3 @@ const Index = () => {
 };
 
 export default Index;
-

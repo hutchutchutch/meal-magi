@@ -8,14 +8,12 @@ interface FeatureCardProps {
   description: string;
 }
 
-export const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps) => (
+export const FeatureCard = ({ icon: Icon, title }: FeatureCardProps) => (
   <motion.div
     whileHover={{ y: -5 }}
-    className="feature-card p-6 rounded-2xl bg-card shadow-lg hover:shadow-xl transition-all duration-300 w-[300px]"
+    className="feature-card p-4 rounded-2xl bg-card shadow-lg hover:shadow-xl transition-all duration-300"
   >
-    <Icon className="feature-icon w-12 h-12 mx-auto mb-4 text-primary" />
-    <h3 className="text-xl font-semibold mb-2 text-center">{title}</h3>
-    <p className="text-muted-foreground text-center">{description}</p>
+    <Icon className="feature-icon mx-auto mb-2" />
+    <h3 className="font-medium">{title}</h3>
   </motion.div>
 );
-
