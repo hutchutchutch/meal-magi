@@ -1,32 +1,24 @@
 
-export const dietTypes = [
-  { id: "vegetarian", label: "Vegetarian" },
-  { id: "vegan", label: "Vegan" },
-  { id: "gluten-free", label: "Gluten-free" },
-  { id: "dairy-free", label: "Dairy-free" },
-  { id: "keto", label: "Keto" },
-  { id: "paleo", label: "Paleo" },
-];
-
 export const steps = [
   {
-    title: "Welcome to MealMagi!",
-    message: "Let's get you started on your mindful cooking journey.",
+    title: "Welcome to MealMagi",
+    message: "Let's get started with your personalized cooking journey.",
   },
   {
-    title: "Your Food Preferences",
+    title: "Account Setup",
+    message: "Create your account to save your preferences and recipes.",
+  },
+  {
+    title: "Diet & Allergies",
     message: "Tell us about your dietary needs and preferences.",
   },
   {
-    title: "Your Location",
-    message: "Help us find the freshest local ingredients for you.",
+    title: "Location",
+    message: "We'll use this to find local, seasonal ingredients near you.",
   },
   {
-    title: "Choose Your Plan",
-    message: "Select the perfect plan for your cooking adventure.",
-  },
-  {
-    title: "Stay Connected",
-    message: "Let us know how you'd like to receive updates.",
+    title: "Final Steps",
+    message: "Choose your plan and notification preferences.",
   },
 ];
+

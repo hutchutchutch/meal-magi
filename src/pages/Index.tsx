@@ -7,9 +7,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { FeatureCard } from "./components/FeatureCard";
-import { OnboardingDialog } from "./components/OnboardingDialog";
-import { FormData } from "./components/OnboardingDialog/types";
+import { FeatureCard } from "./Index/components/FeatureCard";
+import { OnboardingDialog } from "./Index/components/OnboardingDialog";
+import { FormData } from "./Index/components/OnboardingDialog/types";
 
 const Index = () => {
   const { toast } = useToast();
