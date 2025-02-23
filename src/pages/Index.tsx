@@ -168,9 +168,14 @@ const Index = () => {
         </div>
 
         {/* Title and sparkles */}
-        <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white relative z-20">
-          MealMagi
-        </h1>
+        <div className="text-center relative z-20">
+          <p className="text-white text-xl mb-4 opacity-90">
+            Have a spiritual connection with your food
+          </p>
+          <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white">
+            MealMagi
+          </h1>
+        </div>
         <div className="w-[40rem] h-40 relative">
           {/* Gradients */}
           <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-primary to-transparent h-[2px] w-3/4 blur-sm" />
@@ -260,3 +265,4 @@ const Index = () => {
 };
 
 export default Index;
+
