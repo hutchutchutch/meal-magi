@@ -1,24 +1,9 @@
-
-import { Button } from "@/components/ui/button";
-import { SparklesCore } from "@/components/ui/sparkles";
-import { 
-  ChefHat, 
-  Bookmark, 
-  Lightbulb, 
-  SunSnow, 
-  AlarmClockPlus, 
-  Sparkles, 
-  ListChecks, 
-  Soup,
-  ShoppingCart 
-} from "lucide-react";
-import { motion } from "framer-motion";
-import Marquee from "react-fast-marquee";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { FeatureCard } from "./Index/components/FeatureCard";
+import { Hero } from "./Index/components/Hero";
+import { MarqueeSection } from "./Index/components/MarqueeSection";
 import { OnboardingDialog } from "./Index/components/OnboardingDialog";
 import { FormData } from "./Index/components/OnboardingDialog/types";
 
@@ -157,113 +142,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      <section className="h-screen w-full bg-black flex flex-col items-center justify-start overflow-hidden rounded-md relative">
-        <div className="absolute top-4 right-4 flex gap-4 z-30">
-          <Button
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-white px-8"
-            onClick={() => navigate("/auth")}
-          >
-            Get Free Meal Plan
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="bg-transparent border-white text-white hover:bg-white/10 px-8"
-            asChild
-          >
-            <Link to="/auth">Sign In</Link>
-          </Button>
-        </div>
-
-        <div className="text-center relative z-20 mt-64">
-          <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white">
-            MealMagi
-          </h1>
-        </div>
-        <div className="w-[40rem] h-40 relative">
-          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-primary to-transparent h-[2px] w-3/4 blur-sm" />
-          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-primary to-transparent h-px w-3/4" />
-          <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-accent to-transparent h-[5px] w-1/4 blur-sm" />
-          <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-accent to-transparent h-px w-1/4" />
-
-          <SparklesCore
-            background="transparent"
-            minSize={0.4}
-            maxSize={1}
-            particleDensity={1200}
-            className="w-full h-full"
-            particleColor="#FFFFFF"
-          />
-
-          <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
-        </div>
-        
-        <div className="absolute bottom-8 left-0 right-0">
-          <div className="text-center mb-8">
-            <p className="text-2xl relative text-primary">
-              Connect with your food
-            </p>
-          </div>
-
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black to-transparent" />
-            
-            <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-black to-transparent" />
-            <div className="pointer-events-none absolute right-0 z-10 w-[100px] h-full bg-gradient-to-l from-black to-transparent" />
-            
-            <Marquee gradientWidth={0} speed={30}>
-              <div className="flex gap-8 px-8">
-                <FeatureCard
-                  icon={Bookmark}
-                  title="Favorite\nRecipes"
-                  description="Save and organize your most loved recipes for quick access"
-                />
-                <FeatureCard
-                  icon={Lightbulb}
-                  title="Chef\nTips"
-                  description="Professional cooking insights and techniques at your fingertips"
-                />
-                <FeatureCard
-                  icon={ChefHat}
-                  title="Personalized\nRecipes"
-                  description="AI-curated recipes tailored to your preferences and dietary needs"
-                />
-                <FeatureCard
-                  icon={SunSnow}
-                  title="Seasonal\nProduce"
-                  description="Stay connected with nature's rhythm through seasonal ingredients"
-                />
-                <FeatureCard
-                  icon={AlarmClockPlus}
-                  title="20-min\nMeals"
-                  description="Quick and delicious recipes for busy schedules"
-                />
-                <FeatureCard
-                  icon={Sparkles}
-                  title="Pantry\nPurification"
-                  description="Smart organization and optimal ingredient usage"
-                />
-                <FeatureCard
-                  icon={ListChecks}
-                  title="Simple\nSteps"
-                  description="Clear and concise cooking instructions for every skill level"
-                />
-                <FeatureCard
-                  icon={Soup}
-                  title="Guided\nMeditations"
-                  description="Mindful cooking experiences for spiritual nourishment"
-                />
-                <FeatureCard
-                  icon={ShoppingCart}
-                  title="Curated\nGroceries"
-                  description="Smart shopping lists based on your meal plans"
-                />
-              </div>
-            </Marquee>
-          </div>
-        </div>
-      </section>
+      <Hero />
+      <MarqueeSection />
 
       <OnboardingDialog
         currentStep={currentStep}
@@ -280,4 +160,3 @@ const Index = () => {
 };
 
 export default Index;
-
