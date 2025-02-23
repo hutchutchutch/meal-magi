@@ -39,64 +39,54 @@ const Auth = () => {
   const handleAuth = async (values: z.infer<typeof authSchema>) => {
     try {
       setLoading(true);
-
-      // First, try to sign in
+      
+      // First try to sign in
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
 
-      // If there's an error and it's because the user doesn't exist
-      if (signInError?.message.includes("Invalid login credentials")) {
-        // Try to check if the user exists
-        const { data: { users }, error: getUserError } = await supabase.auth.admin.listUsers({
-          filters: {
-            email: values.email,
-          },
-        });
-
-        if (getUserError) {
-          throw getUserError;
-        }
-
-        // If no user exists with this email, sign them up
-        if (!users || users.length === 0) {
-          const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-            email: values.email,
-            password: values.password,
-          });
-
-          if (signUpError) throw signUpError;
-
-          if (signUpData.user) {
-            toast({
-              title: "Account created",
-              description: "Welcome to MealMagi!",
-            });
-            navigate("/dashboard");
-            return;
-          }
-        } else {
-          // If user exists but password is wrong
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Wrong password",
-          });
-          return;
-        }
-      }
-
-      if (signInError) throw signInError;
-
-      // If sign in was successful
-      if (signInData.user) {
+      // If there's no sign in error, proceed with navigation
+      if (!signInError) {
         toast({
           title: "Welcome back!",
           description: "Successfully signed in",
         });
         navigate("/dashboard");
+        return;
       }
+
+      // If sign in failed, attempt to sign up
+      if (signInError.message.includes("Invalid login credentials")) {
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email: values.email,
+          password: values.password,
+        });
+
+        if (signUpError) {
+          // If sign up fails because user already exists, it means password was wrong
+          if (signUpError.message.includes("User already registered")) {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: "Wrong password",
+            });
+            return;
+          }
+          throw signUpError;
+        }
+
+        if (signUpData.user) {
+          toast({
+            title: "Account created",
+            description: "Welcome to MealMagi!",
+          });
+          navigate("/dashboard");
+          return;
+        }
+      }
+
+      throw signInError;
     } catch (error: any) {
       console.error("Auth error:", error);
       toast({
