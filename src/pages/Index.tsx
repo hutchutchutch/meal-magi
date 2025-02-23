@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { 
@@ -8,7 +9,8 @@ import {
   AlarmClockPlus, 
   Sparkles, 
   ListChecks, 
-  Soup 
+  Soup,
+  ShoppingCart 
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Marquee from "react-fast-marquee";
@@ -214,43 +216,48 @@ const Index = () => {
               <div className="flex gap-8 px-8">
                 <FeatureCard
                   icon={Bookmark}
-                  title="Favorite Recipes"
+                  title="Favorite\nRecipes"
                   description="Save and organize your most loved recipes for quick access"
                 />
                 <FeatureCard
                   icon={Lightbulb}
-                  title="Chef Tips"
+                  title="Chef\nTips"
                   description="Professional cooking insights and techniques at your fingertips"
                 />
                 <FeatureCard
                   icon={ChefHat}
-                  title="Personalized Recipes"
+                  title="Personalized\nRecipes"
                   description="AI-curated recipes tailored to your preferences and dietary needs"
                 />
                 <FeatureCard
                   icon={SunSnow}
-                  title="Seasonal Produce"
+                  title="Seasonal\nProduce"
                   description="Stay connected with nature's rhythm through seasonal ingredients"
                 />
                 <FeatureCard
                   icon={AlarmClockPlus}
-                  title="20-min Meals"
+                  title="20-min\nMeals"
                   description="Quick and delicious recipes for busy schedules"
                 />
                 <FeatureCard
                   icon={Sparkles}
-                  title="Pantry Purification"
+                  title="Pantry\nPurification"
                   description="Smart organization and optimal ingredient usage"
                 />
                 <FeatureCard
                   icon={ListChecks}
-                  title="Simple Steps"
+                  title="Simple\nSteps"
                   description="Clear and concise cooking instructions for every skill level"
                 />
                 <FeatureCard
                   icon={Soup}
-                  title="Guided Meditations"
+                  title="Guided\nMeditations"
                   description="Mindful cooking experiences for spiritual nourishment"
+                />
+                <FeatureCard
+                  icon={ShoppingCart}
+                  title="Curated\nGroceries"
+                  description="Smart shopping lists based on your meal plans"
                 />
               </div>
             </Marquee>
@@ -273,3 +280,4 @@ const Index = () => {
 };
 
 export default Index;
+

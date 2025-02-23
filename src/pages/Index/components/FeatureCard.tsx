@@ -14,6 +14,7 @@ export const FeatureCard = ({ icon: Icon, title }: FeatureCardProps) => (
     className="feature-card p-4 rounded-2xl bg-card shadow-lg hover:shadow-xl transition-all duration-300"
   >
     <Icon className="feature-icon mx-auto mb-2" />
-    <h3 className="font-medium">{title}</h3>
+    <h3 className="font-medium whitespace-pre-line">{title}</h3>
   </motion.div>
 );
+
