@@ -1,7 +1,15 @@
-
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
-import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
+import { 
+  ChefHat, 
+  Bookmark, 
+  Lightbulb, 
+  SunSnow, 
+  AlarmClockPlus, 
+  Sparkles, 
+  ListChecks, 
+  Soup 
+} from "lucide-react";
 import { motion } from "framer-motion";
 import Marquee from "react-fast-marquee";
 import { Link, useNavigate } from "react-router-dom";
@@ -148,7 +156,6 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <section className="h-screen w-full bg-black flex flex-col items-center justify-start overflow-hidden rounded-md relative">
-        {/* Top right CTAs */}
         <div className="absolute top-4 right-4 flex gap-4 z-30">
           <Button
             size="lg"
@@ -167,20 +174,17 @@ const Index = () => {
           </Button>
         </div>
 
-        {/* Title and sparkles */}
         <div className="text-center relative z-20 mt-64">
           <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white">
             MealMagi
           </h1>
         </div>
         <div className="w-[40rem] h-40 relative">
-          {/* Gradients */}
           <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-primary to-transparent h-[2px] w-3/4 blur-sm" />
           <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-primary to-transparent h-px w-3/4" />
           <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-accent to-transparent h-[5px] w-1/4 blur-sm" />
           <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-accent to-transparent h-px w-1/4" />
 
-          {/* Core sparkles component */}
           <SparklesCore
             background="transparent"
             minSize={0.4}
@@ -190,13 +194,10 @@ const Index = () => {
             particleColor="#FFFFFF"
           />
 
-          {/* Radial gradient to prevent sharp edges */}
           <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
         </div>
         
-        {/* Marquee section at the bottom of hero */}
         <div className="absolute bottom-8 left-0 right-0">
-          {/* Tagline above marquee */}
           <div className="text-center mb-8">
             <p className="text-2xl relative text-primary">
               Connect with your food
@@ -204,49 +205,52 @@ const Index = () => {
           </div>
 
           <div className="relative">
-            {/* Main background gradient */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black to-transparent" />
             
-            {/* Marquee fade edges */}
             <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-black to-transparent" />
             <div className="pointer-events-none absolute right-0 z-10 w-[100px] h-full bg-gradient-to-l from-black to-transparent" />
             
             <Marquee gradientWidth={0} speed={30}>
               <div className="flex gap-8 px-8">
                 <FeatureCard
+                  icon={Bookmark}
+                  title="Favorite Recipes"
+                  description="Save and organize your most loved recipes for quick access"
+                />
+                <FeatureCard
+                  icon={Lightbulb}
+                  title="Chef Tips"
+                  description="Professional cooking insights and techniques at your fingertips"
+                />
+                <FeatureCard
                   icon={ChefHat}
                   title="Personalized Recipes"
-                  description="Healthy whole food recipes curated to your diet and palate preferences"
+                  description="AI-curated recipes tailored to your preferences and dietary needs"
                 />
                 <FeatureCard
-                  icon={Sprout}
-                  title="Local Produce"
-                  description="Identifying seasonal available produce based on your local region"
+                  icon={SunSnow}
+                  title="Seasonal Produce"
+                  description="Stay connected with nature's rhythm through seasonal ingredients"
                 />
                 <FeatureCard
-                  icon={Brain}
-                  title="Informative Tips"
-                  description="Helpful tidbits of information for each step of the process so you learn as you go"
+                  icon={AlarmClockPlus}
+                  title="20-min Meals"
+                  description="Quick and delicious recipes for busy schedules"
                 />
                 <FeatureCard
-                  icon={Bell}
-                  title="Guided Meditations"
-                  description="Developing a spiritual connection with the food you consume amplifies the nourishment"
-                />
-                <FeatureCard
-                  icon={ChefHat}
-                  title="Meal Planning"
-                  description="Weekly shopping lists generated to simpilfy the hassle of meal prep"
-                />
-                <FeatureCard
-                  icon={Sprout}
+                  icon={Sparkles}
                   title="Pantry Purification"
-                  description="Utilize ingredients you already have, no more discovering expired foods on your shelf"
+                  description="Smart organization and optimal ingredient usage"
                 />
                 <FeatureCard
-                  icon={Brain}
-                  title="Curated Favorites"
-                  description="Label your favorite recipes as quick & easy, budget friendly, clean and revitalizing"
+                  icon={ListChecks}
+                  title="Simple Steps"
+                  description="Clear and concise cooking instructions for every skill level"
+                />
+                <FeatureCard
+                  icon={Soup}
+                  title="Guided Meditations"
+                  description="Mindful cooking experiences for spiritual nourishment"
                 />
               </div>
             </Marquee>
@@ -269,4 +273,3 @@ const Index = () => {
 };
 
 export default Index;
-
