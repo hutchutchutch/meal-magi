@@ -1,19 +1,81 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Plus, Trash } from "lucide-react";
 import { format } from "date-fns";
 import { AddPantryDialog } from './AddPantryDialog';
 import { PantryItem } from '../types';
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 export const Pantry = () => {
   const [isAddPantryOpen, setIsAddPantryOpen] = useState(false);
-  const [pantryItems, setPantryItems] = useState<PantryItem[]>([
-    { id: '1', name: 'Arborio Rice', amount: '2 cups', expirationDate: new Date('2024-03-31') },
-    { id: '2', name: 'Olive Oil', amount: '500ml', expirationDate: new Date('2024-03-31') },
-  ]);
+  const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
+  const { toast } = useToast();
 
-  const handleRemovePantryItem = (id: string) => {
-    setPantryItems(pantryItems.filter(item => item.id !== id));
+  useEffect(() => {
+    const fetchPantryItems = async () => {
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const userId = sessionData.session?.user.id;
+
+        if (!userId) {
+          throw new Error('No user session found');
+        }
+
+        const { data, error } = await supabase
+          .from('pantry_items')
+          .select('id, item_name, quantity, date_added')
+          .eq('user_id', userId);
+
+        if (error) {
+          throw error;
+        }
+
+        setPantryItems(
+          data.map((item) => ({
+            id: item.id,
+            name: item.item_name,
+            amount: item.quantity,
+            expirationDate: new Date(item.date_added), // Using date_added as expiration for now
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching pantry items:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load pantry items",
+        });
+      }
+    };
+
+    fetchPantryItems();
+  }, [toast]);
+
+  const handleRemovePantryItem = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('pantry_items')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        throw error;
+      }
+
+      setPantryItems(pantryItems.filter(item => item.id !== id));
+      toast({
+        title: "Success",
+        description: "Item removed from pantry",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to remove item",
+      });
+    }
   };
 
   return (
