@@ -147,7 +147,27 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      <section className="h-[80vh] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
+      <section className="h-[80vh] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md relative">
+        {/* Top right CTAs */}
+        <div className="absolute top-4 right-4 flex gap-4 z-30">
+          <Button
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-white px-8"
+            onClick={() => navigate("/auth")}
+          >
+            Get Started
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="bg-transparent border-white text-white hover:bg-white/10 px-8"
+            asChild
+          >
+            <Link to="/auth">Sign In</Link>
+          </Button>
+        </div>
+
+        {/* Title and sparkles */}
         <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white relative z-20">
           MealMagi
         </h1>
@@ -172,22 +192,58 @@ const Index = () => {
           <div className="absolute inset-0 w-full h-full bg-black [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
         </div>
         
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center relative z-20">
-          <Button
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-white px-8"
-            onClick={() => navigate("/auth")}
-          >
-            Get Started
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="bg-transparent border-white text-white hover:bg-white/10 px-8"
-            asChild
-          >
-            <Link to="/auth">Sign In</Link>
-          </Button>
+        {/* Marquee section at the bottom of hero */}
+        <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm">
+          <div className="relative">
+            {/* Shine effect gradients */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90" />
+            <div className="pointer-events-none absolute -inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            <div className="pointer-events-none absolute -inset-x-4 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            
+            {/* Marquee fade edges */}
+            <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-black to-transparent" />
+            <div className="pointer-events-none absolute right-0 z-10 w-[100px] h-full bg-gradient-to-l from-black to-transparent" />
+            
+            <Marquee gradientWidth={0} speed={30}>
+              <div className="flex gap-4 px-4">
+                <FeatureCard
+                  icon={ChefHat}
+                  title="Personalized Recipes"
+                  description="Healthy whole food recipes curated to your diet and palate preferences"
+                />
+                <FeatureCard
+                  icon={Sprout}
+                  title="Local Produce"
+                  description="Identifying seasonal available produce based on your local region"
+                />
+                <FeatureCard
+                  icon={Brain}
+                  title="Informative Tips"
+                  description="Helpful tidbits of information for each step of the process so you learn as you go"
+                />
+                <FeatureCard
+                  icon={Bell}
+                  title="Guided Meditations"
+                  description="Developing a spiritual connection with the food you consume amplifies the nourishment"
+                />
+                <FeatureCard
+                  icon={ChefHat}
+                  title="Meal Planning"
+                  description="Weekly shopping lists generated to simpilfy the hassle of meal prep"
+                />
+                <FeatureCard
+                  icon={Sprout}
+                  title="Pantry Purification"
+                  description="Utilize ingredients you already have, no more discovering expired foods on your shelf"
+                />
+                <FeatureCard
+                  icon={Brain}
+                  title="Curated Favorites"
+                  description="Label your favorite recipes as quick & easy, budget friendly, clean and revitalizing"
+                />
+              </div>
+            </Marquee>
+          </div>
         </div>
       </section>
 
@@ -201,59 +257,6 @@ const Index = () => {
         loadTestData={loadTestData}
         onOpenChange={() => setCurrentStep(-1)}
       />
-
-      <section className="py-20 px-8 bg-black relative overflow-hidden">
-        <div className="relative">
-          {/* Shine effect gradients */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90" />
-          <div className="pointer-events-none absolute -inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-          <div className="pointer-events-none absolute -inset-x-4 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-          
-          {/* Marquee fade edges */}
-          <div className="pointer-events-none absolute left-0 z-10 w-[100px] h-full bg-gradient-to-r from-black to-transparent" />
-          <div className="pointer-events-none absolute right-0 z-10 w-[100px] h-full bg-gradient-to-l from-black to-transparent" />
-          
-          <Marquee gradientWidth={0} speed={30}>
-            <div className="flex gap-4 px-4">
-              <FeatureCard
-                icon={ChefHat}
-                title="Personalized Recipes"
-                description="Healthy whole food recipes curated to your diet and palate preferences"
-              />
-              <FeatureCard
-                icon={Sprout}
-                title="Local Produce"
-                description="Identifying seasonal available produce based on your local region"
-              />
-              <FeatureCard
-                icon={Brain}
-                title="Informative Tips"
-                description="Helpful tidbits of information for each step of the process so you learn as you go"
-              />
-              <FeatureCard
-                icon={Bell}
-                title="Guided Meditations"
-                description="Developing a spiritual connection with the food you consume amplifies the nourishment"
-              />
-              <FeatureCard
-                icon={ChefHat}
-                title="Meal Planning"
-                description="Weekly shopping lists generated to simpilfy the hassle of meal prep"
-              />
-              <FeatureCard
-                icon={Sprout}
-                title="Pantry Purification"
-                description="Utilize ingredients you already have, no more discovering expired foods on your shelf"
-              />
-              <FeatureCard
-                icon={Brain}
-                title="Curated Favorites"
-                description="Label your favorite recipes as quick & easy, budget friendly, clean and revitalizing"
-              />
-            </div>
-          </Marquee>
-        </div>
-      </section>
     </div>
   );
 };
