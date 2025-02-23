@@ -55,7 +55,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -95,8 +95,14 @@
   max-width: 200px;
   height: 220px;
   flex-shrink: 0;
-  background: linear-gradient(to bottom, hsl(142 30% 98%), hsl(142 30% 95%));
-  border: 1px solid hsl(142 30% 90%);
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(47, 214, 111, 0.15);
+  transition: all 0.3s ease-in-out;
+}
+
+.feature-card:hover {
+  box-shadow: 0 0 30px rgba(47, 214, 111, 0.25);
 }
 
 .feature-icon {
@@ -104,13 +110,12 @@
 }
 
 .feature-card h3 {
-  @apply text-base;
+  @apply text-base text-white;
 }
 
 .feature-card p {
-  @apply text-sm;
+  @apply text-sm text-gray-400;
 }
-
 
 .meal-chart {
   min-height: 60px;
