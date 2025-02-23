@@ -169,9 +169,16 @@ const Index = () => {
 
         {/* Title and sparkles */}
         <div className="text-center relative z-20">
-          <p className="text-white text-xl mb-4 opacity-90">
-            Have a spiritual connection with your food
-          </p>
+          <motion.p 
+            className="text-2xl mb-6 relative"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="bg-gradient-to-r from-primary via-emerald-400 to-primary bg-clip-text text-transparent animate-pulse">
+              Have a Spiritual Connection with Your Food
+            </span>
+          </motion.p>
           <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white">
             MealMagi
           </h1>
