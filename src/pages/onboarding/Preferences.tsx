@@ -24,6 +24,8 @@ const Preferences = () => {
   const [allergens, setAllergens] = useState("");
   const [dislikedIngredients, setDislikedIngredients] = useState("");
   const [likedIngredients, setLikedIngredients] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +43,8 @@ const Preferences = () => {
         allergens: allergens.split(",").map((item) => item.trim()),
         disliked_ingredients: dislikedIngredients.split(",").map((item) => item.trim()),
         liked_ingredients: likedIngredients.split(",").map((item) => item.trim()),
+        city,
+        state
       });
 
       if (error) throw error;

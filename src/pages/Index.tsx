@@ -150,16 +150,14 @@ const Index = () => {
         ? profileData.liked_ingredients.join(", ")
         : "";
 
-      const [city, state] = (profileData.preferred_location || "").split(", ");
-
       setFormData({
         email: authData.user.email || "",
         password: "testpassword123",
         dietaryPreferences: [],  // We don't store this in the current schema
         allergens,
         likedIngredients,
-        city: city || "",
-        state: state || "",
+        city: profileData.city || "",
+        state: profileData.state || "",
         plan: "basic",
         notifications: {
           recipeReminders: notifData.recipe_reminders,
