@@ -1,0 +1,160 @@
+{
+    "workflowResult": {
+        "userPreferences": {
+            "caloriesPerMeal": 500,
+            "proteinPerMeal": 20,
+            "allergens": [
+                "peanuts",
+                "tree nuts",
+                "gluten"
+            ],
+            "dietaryPreferences": [
+                "vegetarian"
+            ],
+            "likedFoods": [
+                "spinach",
+                "broccoli, 'beef"
+            ],
+            "dislikedFoods": [
+                "garlic",
+                "onions"
+            ],
+            "location": "California"
+        },
+        "recipes": [
+            {
+                "name": "Warm Quinoa and Roasted Vegetable Salad",
+                "description": "This vibrant and hearty salad showcases seasonal December vegetables while offering a complex blend of flavors and textures. The nutty quinoa pairs beautifully with the sweetness of roasted carrots and bell peppers, while fresh spinach adds a pop of color and nutrients. A light olive oil and lemon dressing enhances the dish's brightness, making it feel satisfying yet refreshing. Each bite brings together warm and cool, crunchy and tender, sweet and savory, highlighting how simple techniques create delicious results.",
+                "tips": "Make sure to rinse the quinoa before cooking to remove the natural coating called saponin, which can make it taste bitter. When roasting vegetables, cut them into even pieces to ensure they cook uniformly. Keep an eye on them and stir halfway through to promote even browning. Adjust the lemon dressing to your taste, aiming for a balance of bright acidity and rich flavor. This salad can be made ahead of time and tastes great served warm or at room temperature.",
+                "calories": 495,
+                "protein": 21,
+                "ingredients": [
+                    {
+                        "name": "quinoa",
+                        "quantity": "1",
+                        "unit": "cup",
+                        "calories": 222,
+                        "protein": 8,
+                        "flavorProfile": "nutty, slightly earthy with a fluffy texture when cooked"
+                    },
+                    {
+                        "name": "carrots",
+                        "quantity": "2",
+                        "unit": "medium",
+                        "calories": 50,
+                        "protein": 1,
+                        "flavorProfile": "sweet, earthy with a crunchy texture"
+                    },
+                    {
+                        "name": "red bell pepper",
+                        "quantity": "1",
+                        "unit": "medium",
+                        "calories": 24,
+                        "protein": 1,
+                        "flavorProfile": "sweet, juicy, and slightly tangy with a vibrant crunch"
+                    },
+                    {
+                        "name": "baby spinach",
+                        "quantity": "3",
+                        "unit": "cups",
+                        "calories": 21,
+                        "protein": 3,
+                        "flavorProfile": "mild, slightly sweet, and earthy with a tender texture"
+                    },
+                    {
+                        "name": "olive oil",
+                        "quantity": "2",
+                        "unit": "tbsp",
+                        "calories": 240,
+                        "protein": 0,
+                        "flavorProfile": "rich, fruity, with a peppery finish"
+                    },
+                    {
+                        "name": "lemon",
+                        "quantity": "1",
+                        "unit": "whole",
+                        "calories": 12,
+                        "protein": 0,
+                        "flavorProfile": "bright, acidic, citrusy with floral notes"
+                    }
+                ],
+                "cookTime": "20 minutes",
+                "instructions": [
+                    "Preheat the oven to 400°F (200°C).",
+                    "Rinse the quinoa under cold water to remove any bitterness. In a pot, combine 1 cup of quinoa with 2 cups of water. Bring to a boil, then reduce to a simmer, cover, and cook for 15 minutes or until water is absorbed. Fluff with a fork once done.",
+                    "Peel and slice the carrots into thin rounds, and chop the red bell pepper into bite-sized pieces.",
+                    "On a baking sheet, toss the carrots and bell pepper with 1 tablespoon of olive oil and a pinch of salt. Spread them out in one layer and roast for 15 minutes, stirring halfway through until tender and slightly caramelized.",
+                    "In a small bowl, whisk together the juice of half the lemon, remaining olive oil, a pinch of salt, and black pepper to taste. Adjust the ingredients to your liking.",
+                    "In a large bowl, combine the cooked quinoa, roasted vegetables, and baby spinach. Drizzle with the lemon dressing and toss gently to combine. Taste and adjust seasoning if needed.",
+                    "Serve warm or at room temperature, garnished with lemon wedges if desired."
+                ],
+                "dietaryTags": [
+                    "vegetarian",
+                    "gluten-free",
+                    "dairy-free"
+                ],
+                "allergens": [
+                    "none"
+                ]
+            }
+        ],
+        "validationRules": [
+            [
+                {
+                    "rule": "ingredientCountRule",
+                    "status": "pass"
+                },
+                {
+                    "rule": "calorieComplianceRule",
+                    "status": "pass"
+                },
+                {
+                    "rule": "proteinComplianceRule",
+                    "status": "pass"
+                },
+                {
+                    "rule": "allergenSafetyRule",
+                    "status": "pass"
+                },
+                {
+                    "rule": "dietaryComplianceRule",
+                    "status": "pass"
+                },
+                {
+                    "rule": "ingredientRestrictionRule",
+                    "status": "pass"
+                },
+                {
+                    "rule": "timeManagementRule",
+                    "status": "pass"
+                }
+            ]
+        ],
+        "shoppingList": [
+            {
+                "produce": [
+                    {
+                        "item": "Roma Tomatoes",
+                        "quantity": "6",
+                        "unit": "whole"
+                    },
+                    {
+                        "item": "Fresh Basil",
+                        "quantity": "2",
+                        "unit": "oz"
+                    }
+                ]
+            },
+            {
+                "dairy_and_eggs": [
+                    {
+                        "item": "Whole Milk",
+                        "quantity": "0.5",
+                        "unit": "gallon"
+                    }
+                ]
+            }
+        ]
+    },
+    "success": true
+}
