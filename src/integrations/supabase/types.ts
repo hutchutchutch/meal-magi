@@ -140,6 +140,7 @@ export type Database = {
           ingredients: Json
           source: string
           steps: Json
+          tip: string | null
           title: string
         }
         Insert: {
@@ -150,6 +151,7 @@ export type Database = {
           ingredients: Json
           source?: string
           steps: Json
+          tip?: string | null
           title: string
         }
         Update: {
@@ -160,32 +162,42 @@ export type Database = {
           ingredients?: Json
           source?: string
           steps?: Json
+          tip?: string | null
           title?: string
         }
         Relationships: []
       }
       shopping_lists: {
         Row: {
+          amount: string
           date_created: string | null
           date_updated: string | null
+          estimated_price: number | null
+          grocery_section: string | null
           id: string
-          items: Json
+          item: string
           meal_plan_id: string | null
           user_id: string | null
         }
         Insert: {
+          amount: string
           date_created?: string | null
           date_updated?: string | null
+          estimated_price?: number | null
+          grocery_section?: string | null
           id?: string
-          items: Json
+          item: string
           meal_plan_id?: string | null
           user_id?: string | null
         }
         Update: {
+          amount?: string
           date_created?: string | null
           date_updated?: string | null
+          estimated_price?: number | null
+          grocery_section?: string | null
           id?: string
-          items?: Json
+          item?: string
           meal_plan_id?: string | null
           user_id?: string | null
         }
@@ -232,32 +244,35 @@ export type Database = {
       user_profiles: {
         Row: {
           allergens: Json | null
+          city: string
           date_created: string | null
           date_updated: string | null
           disliked_ingredients: Json | null
           id: string
           liked_ingredients: Json | null
-          preferred_location: string | null
+          state: string
           subscription_plan_id: string | null
         }
         Insert: {
           allergens?: Json | null
+          city: string
           date_created?: string | null
           date_updated?: string | null
           disliked_ingredients?: Json | null
           id: string
           liked_ingredients?: Json | null
-          preferred_location?: string | null
+          state: string
           subscription_plan_id?: string | null
         }
         Update: {
           allergens?: Json | null
+          city?: string
           date_created?: string | null
           date_updated?: string | null
           disliked_ingredients?: Json | null
           id?: string
           liked_ingredients?: Json | null
-          preferred_location?: string | null
+          state?: string
           subscription_plan_id?: string | null
         }
         Relationships: [
