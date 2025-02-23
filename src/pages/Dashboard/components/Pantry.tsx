@@ -6,27 +6,33 @@ import { format } from "date-fns";
 import { AddPantryDialog } from './AddPantryDialog';
 import { PantryItem } from '../types';
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from 'react-router-dom';
 
 export const Pantry = () => {
   const [isAddPantryOpen, setIsAddPantryOpen] = useState(false);
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPantryItems = async () => {
       try {
-        const { data: sessionData } = await supabase.auth.getSession();
-        const userId = sessionData.session?.user.id;
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          throw sessionError;
+        }
 
-        if (!userId) {
-          throw new Error('No user session found');
+        if (!sessionData.session?.user) {
+          navigate('/auth');
+          return;
         }
 
         const { data, error } = await supabase
           .from('pantry_items')
           .select('id, item_name, quantity, date_added')
-          .eq('user_id', userId);
+          .eq('user_id', sessionData.session.user.id);
 
         if (error) {
           throw error;
@@ -51,14 +57,22 @@ export const Pantry = () => {
     };
 
     fetchPantryItems();
-  }, [toast]);
+  }, [toast, navigate]);
 
   const handleRemovePantryItem = async (id: string) => {
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      
+      if (!sessionData.session?.user) {
+        navigate('/auth');
+        return;
+      }
+
       const { error } = await supabase
         .from('pantry_items')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .eq('user_id', sessionData.session.user.id);
 
       if (error) {
         throw error;
@@ -70,6 +84,7 @@ export const Pantry = () => {
         description: "Item removed from pantry",
       });
     } catch (error) {
+      console.error('Error removing pantry item:', error);
       toast({
         variant: "destructive",
         title: "Error",
@@ -112,4 +127,4 @@ export const Pantry = () => {
       />
     </div>
   );
-}; 
+};
