@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -92,7 +93,7 @@
 .feature-card {
   min-width: 150px;
   max-width: 150px;
-  height: 120px;
+  height: auto;
   flex-shrink: 0;
   background: rgba(0, 0, 0, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
