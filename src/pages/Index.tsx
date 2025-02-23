@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { ChefHat, Sprout, Brain, Bell } from "lucide-react";
@@ -146,7 +147,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      <section className="h-screen w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md relative">
+      <section className="h-screen w-full bg-black flex flex-col items-center justify-start overflow-hidden rounded-md relative">
         {/* Top right CTAs */}
         <div className="absolute top-4 right-4 flex gap-4 z-30">
           <Button
@@ -167,10 +168,7 @@ const Index = () => {
         </div>
 
         {/* Title and sparkles */}
-        <div className="text-center relative z-20">
-          <p className="text-2xl mb-6 relative text-primary">
-            Connect with your food
-          </p>
+        <div className="text-center relative z-20 mt-32">
           <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white">
             MealMagi
           </h1>
@@ -198,6 +196,13 @@ const Index = () => {
         
         {/* Marquee section at the bottom of hero */}
         <div className="absolute bottom-8 left-0 right-0">
+          {/* Tagline above marquee */}
+          <div className="text-center mb-8">
+            <p className="text-2xl relative text-primary">
+              Connect with your food
+            </p>
+          </div>
+
           <div className="relative">
             {/* Main background gradient */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black to-transparent" />
@@ -264,3 +269,4 @@ const Index = () => {
 };
 
 export default Index;
+
