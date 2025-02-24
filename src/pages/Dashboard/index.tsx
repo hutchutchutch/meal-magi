@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { UserProfile } from './components/UserProfile';
 import { SavedRecipes } from './components/SavedRecipes';
@@ -10,9 +11,11 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen bg-background">
       {/* Left Column */}
-      <div className="w-1/4 border-r p-4 flex flex-col">
+      <div className="w-1/4 border-r p-4 flex flex-col h-full">
         <UserProfile />
-        <SavedRecipes />
+        <div className="flex-1 overflow-auto mt-4">
+          <SavedRecipes />
+        </div>
       </div>
 
       {/* Center Column */}
@@ -30,4 +33,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
