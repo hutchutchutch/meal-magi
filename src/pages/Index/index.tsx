@@ -83,7 +83,10 @@ const Index = () => {
         <Button
           size="lg"
           className="bg-primary hover:bg-primary/90 text-white px-8"
-          onClick={() => setCurrentStep(0)}
+          onClick={() => {
+            setShowSignIn(false);
+            setIsAuthOpen(true);
+          }}
         >
           Get Free Meal Plan
         </Button>

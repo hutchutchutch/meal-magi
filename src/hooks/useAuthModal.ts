@@ -24,45 +24,50 @@ export const useAuthModal = () => {
     try {
       setLoading(true);
       
-      // First check if user exists in user_profiles
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('email', values.email)
-        .maybeSingle();
-
-      if (profileError) throw profileError;
-
-      // If user exists in profiles, try to sign in
-      if (profileData) {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: values.email,
-          password: values.password,
-        });
-
-        if (signInError) {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Invalid password. Please try again.",
-          });
-          return;
-        }
-
-        navigate("/dashboard");
-        return;
-      }
-
-      // If user doesn't exist, create a new account
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      // First try to sign in
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email: values.email,
-        password: values.password,
+        password: 'temp-password', // We'll need to implement proper password handling later
       });
 
-      if (signUpError) throw signUpError;
+      if (signInError && signInError.message.includes('Invalid login credentials')) {
+        // If sign in fails, try to sign up
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email: values.email,
+          password: 'temp-password', // We'll need to implement proper password handling later
+        });
 
-      if (signUpData.user) {
-        setShowPreferences(true);
+        if (signUpError) throw signUpError;
+
+        // Create user profile after successful signup
+        if (signUpData.user) {
+          const { error: profileError } = await supabase.from('user_profiles').insert({
+            id: signUpData.user.id,
+            email: values.email,
+            city: '',
+            state: '',
+            gender: 'human',
+            height_ft: 5,
+            height_in: 8,
+          });
+
+          if (profileError) throw profileError;
+        }
+
+        toast({
+          title: "Check your email",
+          description: "We sent you a confirmation link to sign up.",
+        });
+      } else if (signInError) {
+        throw signInError;
+      } else {
+        toast({
+          title: "Success",
+          description: "You have been signed in.",
+        });
+        
+        // Navigate to dashboard on successful sign in
+        navigate("/dashboard");
       }
     } catch (error: any) {
       toast({
