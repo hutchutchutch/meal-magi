@@ -33,7 +33,12 @@ export const AuthForm = ({ loading, onSubmit, onGoogleSignIn }: AuthFormProps) =
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="email@example.com" {...field} />
+                <Input 
+                  placeholder="email@example.com" 
+                  {...field} 
+                  autoFocus 
+                  autoComplete="email"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -47,7 +52,12 @@ export const AuthForm = ({ loading, onSubmit, onGoogleSignIn }: AuthFormProps) =
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
+                <Input 
+                  type="password" 
+                  placeholder="••••••••" 
+                  {...field}
+                  autoComplete="current-password"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

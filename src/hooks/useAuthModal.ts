@@ -24,27 +24,45 @@ export const useAuthModal = () => {
     try {
       setLoading(true);
       
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-        email: values.email,
-        password: values.password,
-      });
+      // First check if user exists in user_profiles
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('email', values.email)
+        .maybeSingle();
 
-      if (!signInError) {
-        navigate("/dashboard");
-        return;
-      }
+      if (profileError) throw profileError;
 
-      if (signInError.message.includes("Invalid login credentials")) {
-        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      // If user exists in profiles, try to sign in
+      if (profileData) {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
 
-        if (signUpError) throw signUpError;
-
-        if (signUpData.user) {
-          setShowPreferences(true);
+        if (signInError) {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Invalid password. Please try again.",
+          });
+          return;
         }
+
+        navigate("/dashboard");
+        return;
+      }
+
+      // If user doesn't exist, create a new account
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (signUpError) throw signUpError;
+
+      if (signUpData.user) {
+        setShowPreferences(true);
       }
     } catch (error: any) {
       toast({
@@ -72,7 +90,7 @@ export const useAuthModal = () => {
         liked_ingredients: preferences.likedIngredients.split(",").map((item) => item.trim()),
         city: preferences.city,
         state: preferences.state,
-        height_ft: 5,
+        height_ft: 5, // Default values
         height_in: 8,
         gender: 'human'
       });
