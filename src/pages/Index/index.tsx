@@ -45,8 +45,9 @@ const Index = () => {
 
         const { error: profileError } = await supabase.from('user_profiles').upsert({
           id: user.id,
-          height_feet: parseInt(formData.userInfo.height.feet),
-          height_inches: parseInt(formData.userInfo.height.inches),
+          email: user.email || '',
+          height_ft: parseInt(formData.userInfo.height.feet),
+          height_in: parseInt(formData.userInfo.height.inches),
           weight: parseInt(formData.userInfo.weight),
           gender: formData.userInfo.gender,
           city: formData.userInfo.city,
