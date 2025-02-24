@@ -15,16 +15,16 @@ const MealCard = ({ type, title, cookTime, meditationTime }: MealCardProps) => {
   return (
     <div className="space-y-2">
       <h3 className="text-sm font-medium text-muted-foreground">{type}</h3>
-      <Card>
-        <CardContent className="p-4">
-          <h4 className="font-medium mb-2">{title}</h4>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Clock className="h-4 w-4" />
+      <Card className="h-full">
+        <CardContent className="p-3">
+          <h4 className="font-medium mb-2 text-sm line-clamp-2">{title}</h4>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Clock className="h-3 w-3" />
               {cookTime}
             </div>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Soup className="h-4 w-4" />
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <Soup className="h-3 w-3" />
               {meditationTime}
             </div>
           </div>
@@ -60,7 +60,7 @@ export const TodaysMeals = () => {
   return (
     <div className="mb-8">
       <h2 className="text-xl font-semibold mb-4">Today's Meals</h2>
-      <div className="grid gap-6">
+      <div className="grid grid-cols-3 gap-4">
         {todaysMeals.map((meal) => (
           <MealCard key={meal.type} {...meal} />
         ))}
