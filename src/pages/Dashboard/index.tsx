@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { UserProfile } from './components/UserProfile';
+import { UserPreferences } from './components/UserPreferences';
 import { SavedRecipes } from './components/SavedRecipes';
 import { WeeklyMealPlans } from './components/WeeklyMealPlans';
 import { SeasonalProduce } from './components/SeasonalProduce';
@@ -12,7 +14,10 @@ const Dashboard = () => {
       {/* Left Column */}
       <div className="w-1/4 border-r p-4 flex flex-col">
         <UserProfile />
-        <SavedRecipes />
+        <div className="flex-1">
+          <SavedRecipes />
+        </div>
+        <UserPreferences />
       </div>
 
       {/* Center Column */}
@@ -30,4 +35,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
