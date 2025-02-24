@@ -6,6 +6,8 @@ import { Hero } from "./Index/components/Hero";
 import { MarqueeSection } from "./Index/components/MarqueeSection";
 import { OnboardingDialog } from "./Index/components/OnboardingDialog";
 import { FormData } from "./Index/components/OnboardingDialog/types";
+import { AuthModal } from "@/components/auth/AuthModal";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const { toast } = useToast();
@@ -26,6 +28,7 @@ const Index = () => {
       produceUpdates: true,
     },
   });
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   const loadTestData = async () => {
     try {
@@ -142,6 +145,26 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <div className="absolute top-4 right-4 flex gap-4 z-30">
+        <Button
+          size="lg"
+          className="bg-primary hover:bg-primary/90 text-white px-8"
+          onClick={() => setIsAuthOpen(true)}
+        >
+          Get Free Meal Plan
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          className="bg-transparent border-white text-white hover:bg-white/10 px-8"
+          onClick={() => setIsAuthOpen(true)}
+        >
+          Sign In
+        </Button>
+      </div>
+
+      <AuthModal open={isAuthOpen} onOpenChange={setIsAuthOpen} />
+
       <Hero />
       <MarqueeSection />
 
