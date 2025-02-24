@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -38,14 +39,18 @@ const Index = () => {
   const handleNext = async () => {
     if (currentStep === 2) {
       try {
-        // Save user preferences to database
         const { data: { user } } = await supabase.auth.getUser();
         
         if (!user) throw new Error('No user found');
 
         const { error: profileError } = await supabase.from('user_profiles').upsert({
           id: user.id,
-          ...formData.userInfo,
+          height_feet: parseInt(formData.userInfo.height.feet),
+          height_inches: parseInt(formData.userInfo.height.inches),
+          weight: parseInt(formData.userInfo.weight),
+          gender: formData.userInfo.gender,
+          city: formData.userInfo.city,
+          state: formData.userInfo.state,
           allergens: [...formData.allergens.selected, ...formData.allergens.custom],
           liked_ingredients: formData.preferences.liked,
           disliked_ingredients: formData.preferences.disliked,

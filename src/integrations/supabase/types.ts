@@ -250,13 +250,16 @@ export type Database = {
           disliked_ingredients: Json | null
           email: string
           gender: string
+          height_feet: number | null
           height_ft: number
           height_in: number
+          height_inches: number | null
           id: string
           liked_ingredients: Json | null
           password: string | null
           state: string
           subscription_plan_id: string | null
+          weight: number | null
         }
         Insert: {
           allergens?: Json | null
@@ -266,13 +269,16 @@ export type Database = {
           disliked_ingredients?: Json | null
           email: string
           gender: string
+          height_feet?: number | null
           height_ft: number
           height_in: number
+          height_inches?: number | null
           id: string
           liked_ingredients?: Json | null
           password?: string | null
           state: string
           subscription_plan_id?: string | null
+          weight?: number | null
         }
         Update: {
           allergens?: Json | null
@@ -282,13 +288,16 @@ export type Database = {
           disliked_ingredients?: Json | null
           email?: string
           gender?: string
+          height_feet?: number | null
           height_ft?: number
           height_in?: number
+          height_inches?: number | null
           id?: string
           liked_ingredients?: Json | null
           password?: string | null
           state?: string
           subscription_plan_id?: string | null
+          weight?: number | null
         }
         Relationships: [
           {

@@ -1,3 +1,4 @@
+
 export interface UserInfo {
   height: {
     feet: string;
@@ -27,4 +28,3 @@ export interface FormData {
     disliked: string[];
   };
 }
-

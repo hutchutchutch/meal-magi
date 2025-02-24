@@ -7,6 +7,9 @@ import { useToast } from "@/components/ui/use-toast";
 interface UserProfileData {
   city: string;
   state: string;
+  height_feet: number;
+  height_inches: number;
+  weight: number;
 }
 
 export const UserProfile = () => {
@@ -28,9 +31,9 @@ export const UserProfile = () => {
 
         const { data, error } = await supabase
           .from('user_profiles')
-          .select('city, state')
+          .select('city, state, height_feet, height_inches, weight')
           .eq('id', sessionData.session.user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Error fetching profile:', error);
@@ -61,8 +64,12 @@ export const UserProfile = () => {
         <p className="text-sm text-muted-foreground">
           {profileData ? `${profileData.city}, ${profileData.state}` : 'Loading...'}
         </p>
+        {profileData && (
+          <p className="text-xs text-muted-foreground">
+            {profileData.height_feet}'{profileData.height_inches}" - {profileData.weight}lbs
+          </p>
+        )}
       </div>
     </div>
   );
 };
-

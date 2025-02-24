@@ -101,12 +101,15 @@ export const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
 
       const { error } = await supabase.from("user_profiles").upsert({
         id: user.id,
-        dietary_preferences: selectedDiets,
+        email: user.email || '',
         allergens: preferences.allergens.split(",").map((item) => item.trim()),
         disliked_ingredients: preferences.dislikedIngredients.split(",").map((item) => item.trim()),
         liked_ingredients: preferences.likedIngredients.split(",").map((item) => item.trim()),
         city: preferences.city,
         state: preferences.state,
+        gender: 'human', // Default value
+        height_feet: 5, // Default value
+        height_inches: 8, // Default value
       });
 
       if (error) throw error;
@@ -287,4 +290,4 @@ export const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
       </DialogContent>
     </Dialog>
   );
-}; 
+};
