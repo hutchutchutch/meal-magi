@@ -6,11 +6,69 @@ import { Hero } from "./components/Hero";
 import { MarqueeSection } from "./components/MarqueeSection";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { Button } from "@/components/ui/button";
+import { OnboardingDialog } from "./components/OnboardingDialog";
+import { FormData } from "./components/OnboardingDialog/types";
 
 const Index = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState(-1);
+  const [formData, setFormData] = useState<FormData>({
+    userInfo: {
+      height: {
+        feet: '',
+        inches: '',
+      },
+      weight: '',
+      gender: 'male',
+      city: '',
+      state: '',
+    },
+    allergens: {
+      selected: [],
+      custom: [],
+    },
+    preferences: {
+      liked: [],
+      disliked: [],
+    },
+  });
+
+  const handleNext = async () => {
+    if (currentStep === 2) {
+      try {
+        // Save user preferences to database
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) throw new Error('No user found');
+
+        const { error: profileError } = await supabase.from('user_profiles').upsert({
+          id: user.id,
+          ...formData.userInfo,
+          allergens: [...formData.allergens.selected, ...formData.allergens.custom],
+          liked_ingredients: formData.preferences.liked,
+          disliked_ingredients: formData.preferences.disliked,
+        });
+
+        if (profileError) throw profileError;
+
+        navigate("/dashboard");
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message,
+        });
+      }
+    } else {
+      setCurrentStep((prev) => prev + 1);
+    }
+  };
+
+  const handleBack = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
 
   return (
     <div className="min-h-screen">
@@ -33,8 +91,17 @@ const Index = () => {
       </div>
 
       <AuthModal open={isAuthOpen} onOpenChange={setIsAuthOpen} />
-      <Hero />
+      <Hero setCurrentStep={setCurrentStep} />
       <MarqueeSection />
+      
+      <OnboardingDialog
+        currentStep={currentStep}
+        formData={formData}
+        setFormData={setFormData}
+        onBack={handleBack}
+        onNext={handleNext}
+        onOpenChange={(open) => !open && setCurrentStep(-1)}
+      />
     </div>
   );
 };

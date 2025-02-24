@@ -1,11 +1,14 @@
-
 import { SparklesCore } from "@/components/ui/sparkles";
 import { HeroHeader } from "./HeroHeader";
 
-export const Hero = () => {
+interface HeroProps {
+  setCurrentStep: (step: number) => void;
+}
+
+export const Hero = ({ setCurrentStep }: HeroProps) => {
   return (
     <section className="h-screen w-full bg-black flex flex-col items-center justify-start overflow-hidden rounded-md relative">
-      <HeroHeader />
+      <HeroHeader setCurrentStep={setCurrentStep} />
 
       <div className="text-center relative z-20 mt-64">
         <h1 className="md:text-7xl text-4xl lg:text-9xl font-bold text-center text-white">
