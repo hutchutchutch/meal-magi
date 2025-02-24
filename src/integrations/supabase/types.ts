@@ -248,8 +248,13 @@ export type Database = {
           date_created: string | null
           date_updated: string | null
           disliked_ingredients: Json | null
+          email: string
+          gender: string
+          height_ft: number
+          height_in: number
           id: string
           liked_ingredients: Json | null
+          password: string | null
           state: string
           subscription_plan_id: string | null
         }
@@ -259,8 +264,13 @@ export type Database = {
           date_created?: string | null
           date_updated?: string | null
           disliked_ingredients?: Json | null
+          email: string
+          gender: string
+          height_ft: number
+          height_in: number
           id: string
           liked_ingredients?: Json | null
+          password?: string | null
           state: string
           subscription_plan_id?: string | null
         }
@@ -270,8 +280,13 @@ export type Database = {
           date_created?: string | null
           date_updated?: string | null
           disliked_ingredients?: Json | null
+          email?: string
+          gender?: string
+          height_ft?: number
+          height_in?: number
           id?: string
           liked_ingredients?: Json | null
+          password?: string | null
           state?: string
           subscription_plan_id?: string | null
         }
