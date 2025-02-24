@@ -6,7 +6,7 @@ import { AuthForm } from "./AuthForm";
 import { PreferencesForm } from "./PreferencesForm";
 import { useAuthModal } from "@/hooks/useAuthModal";
 
-export const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
+export const AuthModal = ({ open, onOpenChange, showSignIn, onComplete }: AuthModalProps) => {
   const {
     loading,
     showPreferences,
@@ -19,20 +19,29 @@ export const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
     setSelectedDiets,
   } = useAuthModal();
 
+  // Use this to handle completion of the auth flow
+  const handleAuthComplete = async (values: any) => {
+    await handleAuth(values);
+    if (showSignIn) {
+      onComplete?.();
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
-            {showPreferences ? "Set Your Preferences" : "Welcome to MealMagi"}
+            {showPreferences ? "Set Your Preferences" : (showSignIn ? "Welcome Back" : "Welcome to MealMagi")}
           </DialogTitle>
         </DialogHeader>
 
         {!showPreferences ? (
           <AuthForm
             loading={loading}
-            onSubmit={handleAuth}
+            onSubmit={handleAuthComplete}
             onGoogleSignIn={handleGoogleSignIn}
+            showSignIn={showSignIn}
           />
         ) : (
           <PreferencesForm

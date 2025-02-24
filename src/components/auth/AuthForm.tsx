@@ -12,9 +12,10 @@ interface AuthFormProps {
   loading: boolean;
   onSubmit: (values: z.infer<typeof authSchema>) => Promise<void>;
   onGoogleSignIn: () => Promise<void>;
+  showSignIn?: boolean;
 }
 
-export const AuthForm = ({ loading, onSubmit, onGoogleSignIn }: AuthFormProps) => {
+export const AuthForm = ({ loading, onSubmit, onGoogleSignIn, showSignIn }: AuthFormProps) => {
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -45,49 +46,55 @@ export const AuthForm = ({ loading, onSubmit, onGoogleSignIn }: AuthFormProps) =
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input 
-                  type="password" 
-                  placeholder="••••••••" 
-                  {...field}
-                  autoComplete="current-password"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {!showSignIn && (
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input 
+                    type="password" 
+                    placeholder="••••••••" 
+                    {...field}
+                    autoComplete="current-password"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Loading..." : "Continue"}
+          {loading ? "Loading..." : (showSignIn ? "Check Email" : "Continue")}
         </Button>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
-        </div>
+        {!showSignIn && (
+          <>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
 
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full"
-          onClick={onGoogleSignIn}
-          disabled={loading}
-        >
-          Sign in with Google
-        </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={onGoogleSignIn}
+              disabled={loading}
+            >
+              Sign in with Google
+            </Button>
+          </>
+        )}
       </form>
     </Form>
   );

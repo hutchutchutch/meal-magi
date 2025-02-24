@@ -9,6 +9,8 @@ export const authSchema = z.object({
 export interface AuthModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  showSignIn?: boolean;
+  onComplete?: () => void;
 }
 
 export interface PreferencesFormData {

@@ -15,6 +15,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(-1);
+  const [showSignIn, setShowSignIn] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     userInfo: {
       height: {
@@ -82,7 +83,7 @@ const Index = () => {
         <Button
           size="lg"
           className="bg-primary hover:bg-primary/90 text-white px-8"
-          onClick={() => setIsAuthOpen(true)}
+          onClick={() => setCurrentStep(0)}
         >
           Get Free Meal Plan
         </Button>
@@ -90,13 +91,21 @@ const Index = () => {
           size="lg"
           variant="outline"
           className="bg-transparent border-white text-white hover:bg-white/10 px-8"
-          onClick={() => setIsAuthOpen(true)}
+          onClick={() => {
+            setShowSignIn(true);
+            setIsAuthOpen(true);
+          }}
         >
           Sign In
         </Button>
       </div>
 
-      <AuthModal open={isAuthOpen} onOpenChange={setIsAuthOpen} />
+      <AuthModal 
+        open={isAuthOpen} 
+        onOpenChange={setIsAuthOpen} 
+        showSignIn={showSignIn} 
+        onComplete={() => setShowSignIn(false)}
+      />
       <Hero setCurrentStep={setCurrentStep} />
       <MarqueeSection />
       
