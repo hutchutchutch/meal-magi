@@ -1,12 +1,33 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const SeasonalProduce = () => {
+  const { data: userProfile } = useQuery({
+    queryKey: ['userProfile'],
+    queryFn: async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session?.user.id) return null;
+
+      const { data } = await supabase
+        .from('user_profiles')
+        .select('city, state')
+        .eq('id', sessionData.session.user.id)
+        .maybeSingle();
+
+      return data;
+    }
+  });
+
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Seasonal Produce</h2>
+      <h2 className="text-xl font-semibold mb-4">
+        Seasonal Produce for {userProfile?.city}, {userProfile?.state}
+      </h2>
       <div className="space-y-4">
         {['Asparagus', 'Strawberries'].map((item) => (
           <div key={item} className="flex items-center justify-between p-2 border rounded-lg">
@@ -28,4 +49,4 @@ export const SeasonalProduce = () => {
       </div>
     </div>
   );
-}; 
+};

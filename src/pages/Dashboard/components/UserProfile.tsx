@@ -5,8 +5,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
 interface UserProfileData {
-  city: string;
-  state: string;
   height_feet: number;
   height_inches: number;
   weight: number;
@@ -31,7 +29,7 @@ export const UserProfile = () => {
 
         const { data, error } = await supabase
           .from('user_profiles')
-          .select('city, state, height_feet, height_inches, weight')
+          .select('height_feet, height_inches, weight')
           .eq('id', sessionData.session.user.id)
           .maybeSingle();
 
@@ -61,9 +59,6 @@ export const UserProfile = () => {
       </Avatar>
       <div>
         <h2 className="text-xl font-semibold">Hutch</h2>
-        <p className="text-sm text-muted-foreground">
-          {profileData ? `${profileData.city}, ${profileData.state}` : 'Loading...'}
-        </p>
         {profileData && (
           <p className="text-xs text-muted-foreground">
             {profileData.height_feet}'{profileData.height_inches}" - {profileData.weight}lbs
