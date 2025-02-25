@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -24,52 +23,37 @@ export const useAuthModal = () => {
     try {
       setLoading(true);
       
-      // Normalize the email (trim and lowercase)
+      // Normalize the email
       const normalizedEmail = values.email.trim().toLowerCase();
       
-      // First check if the email exists in user_profiles using ILIKE for case-insensitive matching
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('email')
-        .ilike('email', normalizedEmail)
-        .maybeSingle();
-
-      // Log the results and query details to help with debugging
-      console.log('Auth attempt details:', { 
-        normalizedEmail,
-        profileData,
-        profileError
-      });
-
-      if (profileError) {
-        throw profileError;
-      }
-
-      if (!profileData) {
-        toast({
-          variant: "destructive",
-          title: "Account not found",
-          description: "No account exists with this email address. Please sign up instead.",
-        });
-        return;
-      }
-
-      // If email exists, attempt to sign in
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      // First try to sign up the user
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: normalizedEmail,
-        password: 'temp-password', // We'll need to implement proper password handling later
+        password: 'temp-password', // We'll implement proper password handling later
       });
 
-      if (signInError) {
-        throw signInError;
+      if (signUpError) {
+        // If sign up fails because user exists, try to sign in
+        if (signUpError.message.includes('already registered')) {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email: normalizedEmail,
+            password: 'temp-password',
+          });
+
+          if (signInError) {
+            throw signInError;
+          }
+        } else {
+          throw signUpError;
+        }
       }
 
+      // If we got here, either sign up or sign in was successful
       toast({
         title: "Success",
         description: "You have been signed in.",
       });
       
-      // Navigate to dashboard on successful sign in
       navigate("/dashboard");
       
     } catch (error: any) {
