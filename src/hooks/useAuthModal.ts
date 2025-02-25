@@ -24,51 +24,40 @@ export const useAuthModal = () => {
     try {
       setLoading(true);
       
-      // First try to sign in
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      // First check if the email exists in user_profiles
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('email')
+        .eq('email', values.email)
+        .single();
+
+      if (profileError || !profileData) {
+        toast({
+          variant: "destructive",
+          title: "Account not found",
+          description: "No account exists with this email address. Please sign up instead.",
+        });
+        return;
+      }
+
+      // If email exists, attempt to sign in
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: 'temp-password', // We'll need to implement proper password handling later
       });
 
-      if (signInError && signInError.message.includes('Invalid login credentials')) {
-        // If sign in fails, try to sign up
-        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-          email: values.email,
-          password: 'temp-password', // We'll need to implement proper password handling later
-        });
-
-        if (signUpError) throw signUpError;
-
-        // Create user profile after successful signup
-        if (signUpData.user) {
-          const { error: profileError } = await supabase.from('user_profiles').insert({
-            id: signUpData.user.id,
-            email: values.email,
-            city: '',
-            state: '',
-            gender: 'human',
-            height_ft: 5,
-            height_in: 8,
-          });
-
-          if (profileError) throw profileError;
-        }
-
-        toast({
-          title: "Check your email",
-          description: "We sent you a confirmation link to sign up.",
-        });
-      } else if (signInError) {
+      if (signInError) {
         throw signInError;
-      } else {
-        toast({
-          title: "Success",
-          description: "You have been signed in.",
-        });
-        
-        // Navigate to dashboard on successful sign in
-        navigate("/dashboard");
       }
+
+      toast({
+        title: "Success",
+        description: "You have been signed in.",
+      });
+      
+      // Navigate to dashboard on successful sign in
+      navigate("/dashboard");
+      
     } catch (error: any) {
       toast({
         variant: "destructive",
