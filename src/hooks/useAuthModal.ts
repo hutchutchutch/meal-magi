@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -19,39 +20,43 @@ export const useAuthModal = () => {
     state: "",
   });
 
-  const handleAuth = async (values: z.infer<typeof authSchema>) => {
+  const handleAuth = async (values: z.infer<typeof authSchema>, isSignIn: boolean = false) => {
     try {
       setLoading(true);
       
       // Normalize the email
       const normalizedEmail = values.email.trim().toLowerCase();
       
-      // First try to sign up the user
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-        email: normalizedEmail,
-        password: 'temp-password', // We'll implement proper password handling later
-      });
+      if (isSignIn) {
+        // Handle sign in flow
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: normalizedEmail,
+          password: 'temp-password',
+        });
 
-      if (signUpError) {
-        // If sign up fails because user exists, try to sign in
-        if (signUpError.message.includes('already registered')) {
-          const { error: signInError } = await supabase.auth.signInWithPassword({
-            email: normalizedEmail,
-            password: 'temp-password',
-          });
+        if (signInError) {
+          console.log('Sign in error:', signInError);
+          throw new Error('Invalid email or password. Please try again.');
+        }
+      } else {
+        // Handle sign up flow
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: normalizedEmail,
+          password: 'temp-password',
+        });
 
-          if (signInError) {
-            throw signInError;
+        if (signUpError) {
+          console.log('Sign up error:', signUpError);
+          if (signUpError.message.includes('already registered')) {
+            throw new Error('An account with this email already exists. Please sign in instead.');
           }
-        } else {
           throw signUpError;
         }
       }
 
-      // If we got here, either sign up or sign in was successful
       toast({
         title: "Success",
-        description: "You have been signed in.",
+        description: isSignIn ? "You have been signed in." : "Account created successfully.",
       });
       
       navigate("/dashboard");

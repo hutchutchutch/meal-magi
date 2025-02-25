@@ -13,7 +13,7 @@ export const AuthModal = ({ open, onOpenChange, showSignIn, onComplete }: AuthMo
 
   // Use this to handle completion of the auth flow
   const handleAuthComplete = async (values: any) => {
-    await handleAuth(values);
+    await handleAuth(values, showSignIn);
     if (showSignIn) {
       onComplete?.();
     }
@@ -24,7 +24,7 @@ export const AuthModal = ({ open, onOpenChange, showSignIn, onComplete }: AuthMo
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
-            Sign In or Sign Up
+            {showSignIn ? "Sign In" : "Sign Up"}
           </DialogTitle>
         </DialogHeader>
 
