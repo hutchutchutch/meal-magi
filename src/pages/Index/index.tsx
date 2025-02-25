@@ -2,7 +2,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { Hero } from "./components/Hero";
 import { MarqueeSection } from "./components/MarqueeSection";
 import { AuthModal } from "@/components/auth/AuthModal";
@@ -39,9 +38,16 @@ const Index = () => {
 
   const handleNext = async () => {
     if (currentStep === 2) {
-      // Instead of creating profile here, show auth modal for email collection
-      setIsAuthOpen(true);
-      setShowSignIn(false); // Ensure we're in signup mode
+      // Store form data in localStorage for dashboard access
+      localStorage.setItem('userPreferences', JSON.stringify(formData));
+      
+      // Navigate directly to dashboard instead of showing auth modal
+      navigate("/dashboard");
+      
+      toast({
+        title: "Welcome!",
+        description: "You can now explore the dashboard. Sign up later to save your preferences.",
+      });
     } else {
       setCurrentStep((prev) => prev + 1);
     }
@@ -49,38 +55,6 @@ const Index = () => {
 
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleAuthComplete = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) throw new Error('No user found');
-
-      const { error: profileError } = await supabase.from('user_profiles').upsert({
-        id: user.id,
-        email: user.email || '',
-        height_ft: parseInt(formData.userInfo.height.feet),
-        height_in: parseInt(formData.userInfo.height.inches),
-        weight: parseInt(formData.userInfo.weight),
-        gender: formData.userInfo.gender,
-        city: formData.userInfo.city,
-        state: formData.userInfo.state,
-        allergens: [...formData.allergens.selected, ...formData.allergens.custom],
-        liked_ingredients: formData.preferences.liked,
-        disliked_ingredients: formData.preferences.disliked,
-      });
-
-      if (profileError) throw profileError;
-
-      navigate("/dashboard");
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
-    }
   };
 
   return (
@@ -113,7 +87,6 @@ const Index = () => {
         open={isAuthOpen} 
         onOpenChange={setIsAuthOpen} 
         showSignIn={showSignIn}
-        onComplete={handleAuthComplete}
         preferences={formData}
       />
       <Hero setCurrentStep={setCurrentStep} />
