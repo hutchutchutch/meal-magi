@@ -24,15 +24,22 @@ export const useAuthModal = () => {
     try {
       setLoading(true);
       
-      // First check if the email exists in user_profiles
+      // Normalize the email (trim and lowercase)
+      const normalizedEmail = values.email.trim().toLowerCase();
+      
+      // First check if the email exists in user_profiles using ILIKE for case-insensitive matching
       const { data: profileData, error: profileError } = await supabase
         .from('user_profiles')
         .select('email')
-        .eq('email', values.email)
+        .ilike('email', normalizedEmail)
         .maybeSingle();
 
-      // Log the results to help with debugging
-      console.log('Profile query results:', { profileData, profileError });
+      // Log the results and query details to help with debugging
+      console.log('Auth attempt details:', { 
+        normalizedEmail,
+        profileData,
+        profileError
+      });
 
       if (profileError) {
         throw profileError;
@@ -49,7 +56,7 @@ export const useAuthModal = () => {
 
       // If email exists, attempt to sign in
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: values.email,
+        email: normalizedEmail,
         password: 'temp-password', // We'll need to implement proper password handling later
       });
 
