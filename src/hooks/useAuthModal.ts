@@ -29,9 +29,16 @@ export const useAuthModal = () => {
         .from('user_profiles')
         .select('email')
         .eq('email', values.email)
-        .single();
+        .maybeSingle();
 
-      if (profileError || !profileData) {
+      // Log the results to help with debugging
+      console.log('Profile query results:', { profileData, profileError });
+
+      if (profileError) {
+        throw profileError;
+      }
+
+      if (!profileData) {
         toast({
           variant: "destructive",
           title: "Account not found",
