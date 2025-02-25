@@ -56,51 +56,34 @@ export const useAuthModal = () => {
       const normalizedEmail = values.email.trim().toLowerCase();
 
       // First check if user already exists
-      const { data: existingUser } = await supabase.auth.signInWithPassword({
-        email: normalizedEmail,
-        password: 'temp-password',
-      });
+      const { data: { user: existingUser } } = await supabase.auth.getUser();
 
-      if (existingUser.user) {
+      if (existingUser) {
         throw new Error('An account with this email already exists. Please sign in instead.');
       }
 
       // Create new user
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: normalizedEmail,
-        password: 'temp-password',
+        password: 'temp-password', // We'll implement proper password handling later
       });
 
       if (signUpError) {
         throw signUpError;
       }
 
-      // If we have preferences and user was created successfully, save them
-      if (userPreferences && signUpData.user) {
-        const { error: profileError } = await supabase.from('user_profiles').insert({
-          id: signUpData.user.id,
-          email: normalizedEmail,
-          ...userPreferences
-        });
-
-        if (profileError) {
-          console.error('Error saving preferences:', profileError);
-          // Don't throw here - user account was created successfully
-        }
-      }
-
       toast({
         title: "Success",
         description: "Account created successfully! Please check your email to verify your account.",
       });
-      
-      navigate("/dashboard");
+
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
         description: error.message,
       });
+      throw error; // Re-throw to handle in the calling component
     } finally {
       setLoading(false);
     }

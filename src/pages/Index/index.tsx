@@ -39,35 +39,9 @@ const Index = () => {
 
   const handleNext = async () => {
     if (currentStep === 2) {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) throw new Error('No user found');
-
-        const { error: profileError } = await supabase.from('user_profiles').upsert({
-          id: user.id,
-          email: user.email || '',
-          height_ft: parseInt(formData.userInfo.height.feet),
-          height_in: parseInt(formData.userInfo.height.inches),
-          weight: parseInt(formData.userInfo.weight),
-          gender: formData.userInfo.gender,
-          city: formData.userInfo.city,
-          state: formData.userInfo.state,
-          allergens: [...formData.allergens.selected, ...formData.allergens.custom],
-          liked_ingredients: formData.preferences.liked,
-          disliked_ingredients: formData.preferences.disliked,
-        });
-
-        if (profileError) throw profileError;
-
-        navigate("/dashboard");
-      } catch (error: any) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: error.message,
-        });
-      }
+      // Instead of creating profile here, show auth modal for email collection
+      setIsAuthOpen(true);
+      setShowSignIn(false); // Ensure we're in signup mode
     } else {
       setCurrentStep((prev) => prev + 1);
     }
@@ -75,6 +49,38 @@ const Index = () => {
 
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleAuthComplete = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) throw new Error('No user found');
+
+      const { error: profileError } = await supabase.from('user_profiles').upsert({
+        id: user.id,
+        email: user.email || '',
+        height_ft: parseInt(formData.userInfo.height.feet),
+        height_in: parseInt(formData.userInfo.height.inches),
+        weight: parseInt(formData.userInfo.weight),
+        gender: formData.userInfo.gender,
+        city: formData.userInfo.city,
+        state: formData.userInfo.state,
+        allergens: [...formData.allergens.selected, ...formData.allergens.custom],
+        liked_ingredients: formData.preferences.liked,
+        disliked_ingredients: formData.preferences.disliked,
+      });
+
+      if (profileError) throw profileError;
+
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    }
   };
 
   return (
@@ -85,7 +91,7 @@ const Index = () => {
           className="bg-primary hover:bg-primary/90 text-white px-8"
           onClick={() => {
             setShowSignIn(false);
-            setIsAuthOpen(true);
+            setCurrentStep(0); // Start onboarding flow
           }}
         >
           Get Free Meal Plan
@@ -106,8 +112,9 @@ const Index = () => {
       <AuthModal 
         open={isAuthOpen} 
         onOpenChange={setIsAuthOpen} 
-        showSignIn={showSignIn} 
-        onComplete={() => setShowSignIn(false)}
+        showSignIn={showSignIn}
+        onComplete={handleAuthComplete}
+        preferences={formData}
       />
       <Hero setCurrentStep={setCurrentStep} />
       <MarqueeSection />
