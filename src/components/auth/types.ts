@@ -10,6 +10,7 @@ export interface AuthModalProps {
   onOpenChange: (open: boolean) => void;
   showSignIn?: boolean;
   onComplete?: () => void;
+  preferences?: any; // Add this to support passing preferences during signup
 }
 
 export interface PreferencesFormData {

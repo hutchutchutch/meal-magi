@@ -10,8 +10,6 @@ export const useAuthModal = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [showPreferences, setShowPreferences] = useState(false);
-  const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [preferences, setPreferences] = useState<PreferencesFormData>({
     allergens: "",
     dislikedIngredients: "",
@@ -20,47 +18,27 @@ export const useAuthModal = () => {
     state: "",
   });
 
-  const handleAuth = async (values: z.infer<typeof authSchema>, isSignIn: boolean = false) => {
+  const handleSignIn = async (values: z.infer<typeof authSchema>) => {
     try {
       setLoading(true);
-      
-      // Normalize the email
       const normalizedEmail = values.email.trim().toLowerCase();
-      
-      if (isSignIn) {
-        // Handle sign in flow
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: normalizedEmail,
-          password: 'temp-password',
-        });
 
-        if (signInError) {
-          console.log('Sign in error:', signInError);
-          throw new Error('Invalid email or password. Please try again.');
-        }
-      } else {
-        // Handle sign up flow
-        const { error: signUpError } = await supabase.auth.signUp({
-          email: normalizedEmail,
-          password: 'temp-password',
-        });
+      const { error } = await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password: 'temp-password', // We'll implement proper password handling later
+      });
 
-        if (signUpError) {
-          console.log('Sign up error:', signUpError);
-          if (signUpError.message.includes('already registered')) {
-            throw new Error('An account with this email already exists. Please sign in instead.');
-          }
-          throw signUpError;
-        }
+      if (error) {
+        console.error('Sign in error:', error);
+        throw new Error('Invalid email or password. Please try again.');
       }
 
       toast({
         title: "Success",
-        description: isSignIn ? "You have been signed in." : "Account created successfully.",
+        description: "You have been signed in successfully.",
       });
       
       navigate("/dashboard");
-      
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -72,28 +50,50 @@ export const useAuthModal = () => {
     }
   };
 
-  const handlePreferencesSubmit = async () => {
+  const handleSignUp = async (values: z.infer<typeof authSchema>, userPreferences?: any) => {
     try {
       setLoading(true);
-      const { data: { user } } = await supabase.auth.getUser();
+      const normalizedEmail = values.email.trim().toLowerCase();
 
-      if (!user) throw new Error("No user found");
-
-      const { error } = await supabase.from("user_profiles").upsert({
-        id: user.id,
-        email: user.email || '',
-        allergens: preferences.allergens.split(",").map((item) => item.trim()),
-        disliked_ingredients: preferences.dislikedIngredients.split(",").map((item) => item.trim()),
-        liked_ingredients: preferences.likedIngredients.split(",").map((item) => item.trim()),
-        city: preferences.city,
-        state: preferences.state,
-        height_ft: 5, // Default values
-        height_in: 8,
-        gender: 'human'
+      // First check if user already exists
+      const { data: existingUser } = await supabase.auth.signInWithPassword({
+        email: normalizedEmail,
+        password: 'temp-password',
       });
 
-      if (error) throw error;
+      if (existingUser.user) {
+        throw new Error('An account with this email already exists. Please sign in instead.');
+      }
 
+      // Create new user
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email: normalizedEmail,
+        password: 'temp-password',
+      });
+
+      if (signUpError) {
+        throw signUpError;
+      }
+
+      // If we have preferences and user was created successfully, save them
+      if (userPreferences && signUpData.user) {
+        const { error: profileError } = await supabase.from('user_profiles').insert({
+          id: signUpData.user.id,
+          email: normalizedEmail,
+          ...userPreferences
+        });
+
+        if (profileError) {
+          console.error('Error saving preferences:', profileError);
+          // Don't throw here - user account was created successfully
+        }
+      }
+
+      toast({
+        title: "Success",
+        description: "Account created successfully! Please check your email to verify your account.",
+      });
+      
       navigate("/dashboard");
     } catch (error: any) {
       toast({
@@ -123,13 +123,10 @@ export const useAuthModal = () => {
 
   return {
     loading,
-    showPreferences,
     preferences,
-    selectedDiets,
-    handleAuth,
-    handlePreferencesSubmit,
+    handleSignIn,
+    handleSignUp,
     handleGoogleSignIn,
     setPreferences,
-    setSelectedDiets,
   };
 };

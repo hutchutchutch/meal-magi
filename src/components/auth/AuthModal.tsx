@@ -5,16 +5,25 @@ import { AuthModalProps } from "./types";
 import { AuthForm } from "./AuthForm";
 import { useAuthModal } from "@/hooks/useAuthModal";
 
-export const AuthModal = ({ open, onOpenChange, showSignIn, onComplete }: AuthModalProps) => {
+export const AuthModal = ({ 
+  open, 
+  onOpenChange, 
+  showSignIn = true,
+  onComplete,
+  preferences 
+}: AuthModalProps) => {
   const {
     loading,
-    handleAuth,
+    handleSignIn,
+    handleSignUp,
   } = useAuthModal();
 
-  // Use this to handle completion of the auth flow
-  const handleAuthComplete = async (values: any) => {
-    await handleAuth(values, showSignIn);
+  const handleSubmit = async (values: any) => {
     if (showSignIn) {
+      await handleSignIn(values);
+      onComplete?.();
+    } else {
+      await handleSignUp(values, preferences);
       onComplete?.();
     }
   };
@@ -24,13 +33,13 @@ export const AuthModal = ({ open, onOpenChange, showSignIn, onComplete }: AuthMo
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>
-            {showSignIn ? "Sign In" : "Sign Up"}
+            {showSignIn ? "Sign In" : "Complete Your Registration"}
           </DialogTitle>
         </DialogHeader>
 
         <AuthForm
           loading={loading}
-          onSubmit={handleAuthComplete}
+          onSubmit={handleSubmit}
           onGoogleSignIn={async () => {}}
           showSignIn={showSignIn}
         />
