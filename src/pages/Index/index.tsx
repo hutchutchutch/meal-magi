@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Hero } from "./components/Hero";
 import { MarqueeSection } from "./components/MarqueeSection";
@@ -37,41 +37,73 @@ const Index = () => {
     },
   });
 
+  // Add debugging effect to monitor state changes
+  useEffect(() => {
+    console.log("[DEBUG] Current step:", currentStep);
+    console.log("[DEBUG] Form data state:", formData);
+  }, [currentStep, formData]);
+
   const handleNext = async () => {
+    console.log("[DEBUG] handleNext called, current step:", currentStep);
+    
     if (currentStep === 2) {
       try {
+        console.log("[DEBUG] Final step completed, preparing to navigate to dashboard");
+        
         // Store form data in localStorage for dashboard access
         localStorage.setItem('userPreferences', JSON.stringify(formData));
+        console.log("[DEBUG] User preferences saved to localStorage");
         
-        // Auto sign in with the predefined email
-        await autoSignIn();
+        // Check if we're signed in already
+        const { data: sessionData } = await supabase.auth.getSession();
+        console.log("[DEBUG] Current session:", sessionData);
         
-        // Navigate to dashboard
-        navigate("/dashboard");
-      } catch (error: any) {
-        console.error("Error during auto sign-in:", error);
+        if (!sessionData.session) {
+          console.log("[DEBUG] No active session, attempting auto sign-in");
+          try {
+            // Try auto sign in but continue regardless
+            await autoSignIn();
+            console.log("[DEBUG] Auto sign-in completed successfully");
+          } catch (error: any) {
+            console.error("[DEBUG] Auto sign-in failed but continuing:", error);
+            // Continue without sign-in
+          }
+        } else {
+          console.log("[DEBUG] User already signed in");
+        }
+        
+        // Show success toast
         toast({
-          variant: "destructive",
-          title: "Sign-in Error",
-          description: "Could not automatically sign you in. Continuing as guest.",
+          title: "Onboarding Complete!",
+          description: "Navigating to your personalized dashboard...",
         });
         
-        // Still navigate to dashboard even if sign-in fails
-        navigate("/dashboard");
+        console.log("[DEBUG] About to navigate to dashboard...");
+        // Force navigation to dashboard
+        window.location.href = "/dashboard";
+      } catch (error: any) {
+        console.error("[DEBUG] Critical error during final step:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "There was a problem loading your dashboard. Please try again.",
+        });
       }
     } else {
+      console.log("[DEBUG] Moving to next step:", currentStep + 1);
       setCurrentStep((prev) => prev + 1);
     }
   };
 
   const autoSignIn = async () => {
     const email = "hutch@mealmagi.com";
+    console.log("[DEBUG] Attempting auto sign-in with:", email);
     
     // First check if user is already signed in
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session) {
-      // User is already signed in, nothing to do
+      console.log("[DEBUG] User already has a session, no need to sign in again");
       toast({
         title: "Welcome Back!",
         description: "You're already signed in. Enjoy the dashboard.",
@@ -79,6 +111,7 @@ const Index = () => {
       return;
     }
     
+    console.log("[DEBUG] No existing session, sending OTP sign-in request");
     // Use magic link sign-in (no password needed)
     const { error } = await supabase.auth.signInWithOtp({
       email,
@@ -89,10 +122,11 @@ const Index = () => {
     });
     
     if (error) {
-      console.error("Sign-in error:", error);
+      console.error("[DEBUG] Sign-in error:", error);
       throw error;
     }
     
+    console.log("[DEBUG] OTP sign-in request sent successfully");
     toast({
       title: "Welcome!",
       description: "You've been automatically signed in as hutch@mealmagi.com",
@@ -100,14 +134,18 @@ const Index = () => {
   };
 
   const handleBack = () => {
+    console.log("[DEBUG] Going back from step:", currentStep);
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
   const handleSpecificEmailSignIn = async () => {
+    console.log("[DEBUG] Specific email sign-in button clicked");
     try {
       await autoSignIn();
+      console.log("[DEBUG] Sign-in successful, navigating to dashboard");
       navigate("/dashboard");
     } catch (error: any) {
+      console.error("[DEBUG] Sign-in error:", error);
       toast({
         variant: "destructive",
         title: "Sign-in Error",
