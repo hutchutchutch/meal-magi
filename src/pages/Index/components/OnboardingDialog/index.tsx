@@ -36,7 +36,8 @@ export const OnboardingDialog = ({
   useEffect(() => {
     console.log("[DEBUG] OnboardingDialog - Current step:", currentStep);
     console.log("[DEBUG] OnboardingDialog - Dialog open:", currentStep > -1);
-  }, [currentStep]);
+    console.log("[DEBUG] OnboardingDialog - Form data:", JSON.stringify(formData, null, 2));
+  }, [currentStep, formData]);
 
   const isStepValid = () => {
     let valid = false;
@@ -74,6 +75,12 @@ export const OnboardingDialog = ({
   const handleNextClick = () => {
     console.log("[DEBUG] Next button clicked on step", currentStep);
     console.log("[DEBUG] Current form data:", JSON.stringify(formData, null, 2));
+    
+    // If this is the final step, do some extra logging
+    if (currentStep === steps.length - 1) {
+      console.log("[DEBUG] FINAL STEP - About to call onNext() which should navigate to dashboard");
+    }
+    
     onNext();
   };
 
@@ -84,6 +91,11 @@ export const OnboardingDialog = ({
 
   const handleOpenChange = (open: boolean) => {
     console.log("[DEBUG] Dialog open state changing to:", open);
+    if (!open && currentStep === steps.length - 1) {
+      console.log("[DEBUG] Dialog closing on final step - manually navigating to dashboard");
+      // Force navigation to dashboard if closing on final step
+      window.location.href = "/dashboard";
+    }
     onOpenChange(open);
   };
 
