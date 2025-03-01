@@ -8,6 +8,7 @@ import { AuthModal } from "@/components/auth/AuthModal";
 import { Button } from "@/components/ui/button";
 import { OnboardingDialog } from "./components/OnboardingDialog";
 import { FormData } from "./components/OnboardingDialog/types";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const { toast } = useToast();
@@ -38,23 +39,81 @@ const Index = () => {
 
   const handleNext = async () => {
     if (currentStep === 2) {
-      // Store form data in localStorage for dashboard access
-      localStorage.setItem('userPreferences', JSON.stringify(formData));
-      
-      // Navigate directly to dashboard instead of showing auth modal
-      navigate("/dashboard");
-      
-      toast({
-        title: "Welcome!",
-        description: "You can now explore the dashboard. Sign up later to save your preferences.",
-      });
+      try {
+        // Store form data in localStorage for dashboard access
+        localStorage.setItem('userPreferences', JSON.stringify(formData));
+        
+        // Auto sign in with the predefined email
+        await autoSignIn();
+        
+        // Navigate to dashboard
+        navigate("/dashboard");
+      } catch (error: any) {
+        console.error("Error during auto sign-in:", error);
+        toast({
+          variant: "destructive",
+          title: "Sign-in Error",
+          description: "Could not automatically sign you in. Continuing as guest.",
+        });
+        
+        // Still navigate to dashboard even if sign-in fails
+        navigate("/dashboard");
+      }
     } else {
       setCurrentStep((prev) => prev + 1);
     }
   };
 
+  const autoSignIn = async () => {
+    const email = "hutch@mealmagi.com";
+    
+    // First check if user is already signed in
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session) {
+      // User is already signed in, nothing to do
+      toast({
+        title: "Welcome Back!",
+        description: "You're already signed in. Enjoy the dashboard.",
+      });
+      return;
+    }
+    
+    // Use magic link sign-in (no password needed)
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        // Skip the email verification step
+        shouldCreateUser: true,
+      }
+    });
+    
+    if (error) {
+      console.error("Sign-in error:", error);
+      throw error;
+    }
+    
+    toast({
+      title: "Welcome!",
+      description: "You've been automatically signed in as hutch@mealmagi.com",
+    });
+  };
+
   const handleBack = () => {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleSpecificEmailSignIn = async () => {
+    try {
+      await autoSignIn();
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Sign-in Error",
+        description: error.message || "An error occurred during sign-in",
+      });
+    }
   };
 
   return (
@@ -74,10 +133,7 @@ const Index = () => {
           size="lg"
           variant="outline"
           className="bg-transparent border-white text-white hover:bg-white/10 px-8"
-          onClick={() => {
-            setShowSignIn(true);
-            setIsAuthOpen(true);
-          }}
+          onClick={handleSpecificEmailSignIn}
         >
           Sign In
         </Button>

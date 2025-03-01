@@ -23,6 +23,10 @@ export const AuthForm = ({ loading, onSubmit, onGoogleSignIn, showSignIn }: Auth
     },
   });
 
+  const isSpecificEmail = (email: string) => {
+    return email.toLowerCase() === "hutch@mealmagi.com";
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -41,6 +45,9 @@ export const AuthForm = ({ loading, onSubmit, onGoogleSignIn, showSignIn }: Auth
                 />
               </FormControl>
               <FormMessage />
+              {isSpecificEmail(field.value) && (
+                <p className="text-xs text-green-500 mt-1">Special account - no password needed!</p>
+              )}
             </FormItem>
           )}
         />
