@@ -8,6 +8,12 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      }
+    }
   },
   plugins: [
     react(),
@@ -17,6 +23,9 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@/client": path.resolve(__dirname, "./src/client"),
+      "@/server": path.resolve(__dirname, "./src/server"),
+      "@/components": path.resolve(__dirname, "./src/components"), // Legacy path for transition
     },
   },
 }));

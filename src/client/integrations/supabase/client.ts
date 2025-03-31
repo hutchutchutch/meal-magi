@@ -1,0 +1,12 @@
+// Client-side Supabase client for direct auth operations only
+// Other data operations should go through the server API
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from './types';
+
+const SUPABASE_URL = "https://mpjjkluskabvsduehozm.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wamprbHVza2FidnNkdWVob3ptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk4NzgyNjEsImV4cCI6MjA1NTQ1NDI2MX0.G75520YpouLCAGqMqj_oQkdXyD9XVB8apEbCErhTNl4";
+
+// Import the supabase client like this:
+// import { supabase } from "@/client/integrations/supabase/client";
+
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
