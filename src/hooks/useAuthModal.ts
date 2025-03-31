@@ -18,11 +18,39 @@ export const useAuthModal = () => {
     state: "",
   });
 
+  const isSpecificEmail = (email: string) => {
+    return email.toLowerCase() === "hutch@mealmagi.com";
+  };
+
   const handleSignIn = async (values: z.infer<typeof authSchema>) => {
     try {
       setLoading(true);
       const normalizedEmail = values.email.trim().toLowerCase();
 
+      // Special case for hutch@mealmagi.com - passwordless sign in
+      if (isSpecificEmail(normalizedEmail)) {
+        const { error } = await supabase.auth.signInWithOtp({
+          email: normalizedEmail,
+          options: {
+            shouldCreateUser: true,
+          }
+        });
+
+        if (error) {
+          console.error('Sign in error:', error);
+          throw new Error('Error signing in. Please try again.');
+        }
+
+        toast({
+          title: "Success",
+          description: "You have been signed in successfully. No password needed!",
+        });
+        
+        navigate("/dashboard");
+        return;
+      }
+
+      // Normal sign in for other accounts
       const { error } = await supabase.auth.signInWithPassword({
         email: normalizedEmail,
         password: 'temp-password', // We'll implement proper password handling later
@@ -54,6 +82,29 @@ export const useAuthModal = () => {
     try {
       setLoading(true);
       const normalizedEmail = values.email.trim().toLowerCase();
+
+      // Special case for hutch@mealmagi.com - passwordless sign in
+      if (isSpecificEmail(normalizedEmail)) {
+        const { error } = await supabase.auth.signInWithOtp({
+          email: normalizedEmail,
+          options: {
+            shouldCreateUser: true,
+          }
+        });
+
+        if (error) {
+          console.error('Sign in error:', error);
+          throw new Error('Error signing in. Please try again.');
+        }
+
+        toast({
+          title: "Success",
+          description: "Special account activated! No password needed.",
+        });
+        
+        navigate("/dashboard");
+        return;
+      }
 
       // First check if user already exists
       const { data: { user: existingUser } } = await supabase.auth.getUser();
