@@ -1,69 +1,170 @@
-# Welcome to your Lovable project
+# Meal Magi: AI-Powered Personalized Meal Planning
 
-## Project info
+Meal Magi is a comprehensive meal planning application that leverages AI to create personalized, mindful eating experiences tailored to users' unique dietary needs, preferences, and local seasonal ingredients.
 
-**URL**: https://lovable.dev/projects/c631ef9b-2917-4362-872e-f0900a64e602
+## Project Overview
 
-## How can I edit this code?
+Meal Magi transforms the cooking experience by:
+- Creating personalized meal plans based on user preferences, allergies, and dietary requirements
+- Incorporating local, seasonal ingredients for sustainability and freshness
+- Providing mindfulness meditations to enhance the connection with food
+- Helping users reduce food waste by utilizing pantry items effectively
+- Simplifying cooking with detailed, step-by-step instructions
 
-There are several ways of editing your application.
+## Technology Stack
 
-**Use Lovable**
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+- **Backend**: Node.js, Express, Supabase
+- **AI Integration**: LangGraph agents for intelligent meal planning
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c631ef9b-2917-4362-872e-f0900a64e602) and start prompting.
+## LangGraph Agent Architecture
 
-Changes made via Lovable will be committed automatically to this repo.
+Our AI-powered system utilizes multiple specialized agents working together to create a comprehensive meal planning experience:
 
-**Use your preferred IDE**
+### 1. User Profile Agent
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**Purpose**: Processes and interprets user information to create a comprehensive dietary profile.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+**Tasks**:
+- Analyzes user preferences, allergies, and dietary restrictions
+- Interprets health goals and nutritional needs
+- Considers location data for seasonal produce recommendations
+- Processes pantry inventory for ingredient utilization
 
-Follow these steps:
+### 2. Recipe Generation Agent
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+**Purpose**: Creates personalized recipes based on the user's profile.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+**Tasks**:
+- Generates recipes matching dietary restrictions and preferences
+- Incorporates seasonal produce based on user's location
+- Utilizes pantry items to reduce waste
+- Ensures nutritional balance according to health goals
+- Creates step-by-step instructions with helpful tips for novice cooks
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 3. Meditation Generation Agent
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+**Purpose**: Creates mindfulness content to enhance the cooking and eating experience.
+
+**Tasks**:
+- Develops mindfulness meditations specific to each recipe
+- Creates content that focuses on ingredient appreciation
+- Provides mindful cooking guidance
+- Helps users connect emotionally with their food
+
+### 4. Seasonal Produce Agent
+
+**Purpose**: Identifies local, seasonal ingredients based on user location.
+
+**Tasks**:
+- Maintains database of seasonal produce by region
+- Recommends seasonal alternatives to recipe ingredients
+- Provides information on local farmers' markets
+- Suggests sustainable food choices
+
+### 5. Pantry Optimization Agent
+
+**Purpose**: Helps users manage and utilize their pantry effectively.
+
+**Tasks**:
+- Tracks pantry inventory and expiration dates
+- Suggests recipes to use items before they expire
+- Recommends optimal pantry stocking strategies
+- Reduces food waste through intelligent planning
+
+### 6. Orchestration Agent
+
+**Purpose**: Coordinates the workflow between all specialized agents.
+
+**Tasks**:
+- Manages the sequence of agent interactions
+- Ensures consistency across generated content
+- Resolves conflicts between agent outputs
+- Optimizes the overall meal planning experience
+
+## Data Schema
+
+The application utilizes the following key data models:
+
+- **User Profiles**: Stores user preferences, allergens, dietary restrictions, and location data
+- **Recipes**: Stores generated recipes with ingredients, steps, and tips
+- **Meditations**: Links mindfulness content to specific recipes
+- **Pantry Items**: Tracks user's available ingredients and quantities
+- **Meal Plans**: Organizes weekly meal schedules with associated recipes
+- **Shopping Lists**: Generates grocery lists based on meal plans and pantry inventory
+
+## Key Features
+
+### Personalized Meal Planning
+
+Users can receive completely personalized meal plans that take into account:
+- Dietary restrictions and preferences
+- Seasonal ingredient availability
+- Current pantry inventory
+- Nutritional goals and requirements
+
+### Mindful Cooking Experience
+
+The application enhances the cooking experience through:
+- Recipe-specific meditation guides
+- Mindful cooking instructions
+- Educational content about ingredients
+- Cultural context for dishes
+
+### Waste Reduction
+
+Meal Magi helps users reduce food waste by:
+- Tracking pantry inventory
+- Suggesting recipes to use items before expiration
+- Optimizing shopping lists
+- Providing tips for ingredient preservation and reuse
+
+### Simplified Cooking
+
+The application makes cooking accessible to users of all skill levels by:
+- Breaking down recipes into detailed, manageable steps
+- Providing tips and tricks for each cooking stage
+- Offering substitution suggestions for hard-to-find ingredients
+- Including instructional content for cooking techniques
+
+## Getting Started
+
+### Development Mode
+
+To run both client and server in development mode:
+
+```bash
+npm run dev:all
 ```
 
-**Edit a file directly in GitHub**
+Or to run them separately:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Client only (Vite dev server)
+npm run dev
 
-**Use GitHub Codespaces**
+# Server only (with hot reloading)
+npm run dev:server
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Build and Production
 
-## What technologies are used for this project?
+Build both client and server:
 
-This project is built with .
+```bash
+npm run build:all
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Start the production server:
 
-## How can I deploy this project?
+```bash
+npm run start
+```
 
-Simply open [Lovable](https://lovable.dev/projects/c631ef9b-2917-4362-872e-f0900a64e602) and click on Share -> Publish.
+## Architecture Documentation
 
-## I want to use a custom domain - is that possible?
+For more details on the client-server architecture, see [README.client-server.md](./README.client-server.md).
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
