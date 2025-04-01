@@ -1,0 +1,36 @@
+{
+  "name": "meal-magi-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec \"node --experimental-specifier-resolution=node --loader ts-node/esm\" index.ts",
+    "build": "tsc -p tsconfig.server.json",
+    "start": "node dist/index.js",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@langchain/langgraph": "^0.0.28",
+    "@langchain/openai": "^0.0.14",
+    "@supabase/supabase-js": "^2.48.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "langchain": "^0.1.13",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.5",
+    "eslint": "^9.9.0",
+    "globals": "^15.9.0",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.1"
+  }
+}
